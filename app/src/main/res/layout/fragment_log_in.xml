@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background"
+    tools:context=".ui.login.LogInFragment">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/ic_meal" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:hint="Enter your username"
+        android:backgroundTint="@color/white"/>
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:hint="Enter your password"
+        android:backgroundTint="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="25dp">
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:text="Register" />
+
+        <Button
+            android:id="@+id/logInButton"
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="110dp"
+            android:backgroundTint="@color/white"
+            android:text="Log in"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</LinearLayout>
