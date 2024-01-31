@@ -15,19 +15,23 @@
         android:src="@drawable/ic_meal" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/editUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:hint="Enter your username"
         android:backgroundTint="@color/white"/>
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/editPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:hint="Enter your password"
