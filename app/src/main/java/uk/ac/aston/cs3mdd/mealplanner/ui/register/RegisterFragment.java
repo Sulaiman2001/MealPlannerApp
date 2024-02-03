@@ -35,7 +35,7 @@ public class RegisterFragment extends Fragment {
     private EditText registerUsername, registerPassword, confirmPassword;
     private Button registerButton, returnToLoginButton;
 
-    private TextView  passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg;
+    private TextView  passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg, emptyInputFieldsMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +52,7 @@ public class RegisterFragment extends Fragment {
         passwordCapitalLetterMsg = rootView.findViewById(R.id.passwordCapitalLetterMsg);
         passwordMatchMsg = rootView.findViewById(R.id.passwordMatchMsg);
         passwordNumberMsg = rootView.findViewById(R.id.passwordNumberMsg);
+        emptyInputFieldsMsg = rootView.findViewById(R.id.emptyInputFieldsMsg);
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +73,19 @@ public class RegisterFragment extends Fragment {
     }
 
     private void registerUser() {
-        // Reset visibility of all error messages at the beginning
-        passwordLengthMsg.setVisibility(TextView.INVISIBLE);
-        passwordCapitalLetterMsg.setVisibility(TextView.INVISIBLE);
-        passwordMatchMsg.setVisibility(TextView.INVISIBLE);
-        passwordNumberMsg.setVisibility(TextView.INVISIBLE);
 
         final String username = registerUsername.getText().toString().trim();
         final String password = registerPassword.getText().toString().trim();
         String confirmedPassword = confirmPassword.getText().toString().trim();
 
         boolean hasError = false; // Variable to track if any error occurred
+
+        // Check if username, password, and confirmed password are not empty
+        if (username.isEmpty() || password.isEmpty() || confirmedPassword.isEmpty()) {
+            Toast.makeText(getActivity(), "All fields must be filled", Toast.LENGTH_SHORT).show();
+            emptyInputFieldsMsg.setVisibility(TextView.VISIBLE);
+            return;
+        }
 
         // Check the password is at least 8 characters
         if (password.length() < 8) {
@@ -154,6 +157,7 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(R.id.action_register_to_meals);
             } else {
+
                 Log.e(RegisterTest, "Registration failed. Message: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
@@ -182,7 +186,6 @@ public class RegisterFragment extends Fragment {
         data.put("username", registerUsername.getText().toString());
         data.put("password", registerPassword.getText().toString());
         data.put("confirmedPassword", confirmPassword.getText().toString());
-        // Add other parameters as needed
 
         return data;
     }

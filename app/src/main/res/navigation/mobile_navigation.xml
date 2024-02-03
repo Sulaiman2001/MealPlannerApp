@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_log_in_to_register"
             app:destination="@id/register" />
+        <action
+            android:id="@+id/action_log_in_to_meals"
+            app:destination="@id/meals" />
     </fragment>
 
     <fragment
