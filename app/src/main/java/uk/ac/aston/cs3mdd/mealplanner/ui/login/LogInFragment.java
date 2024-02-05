@@ -79,7 +79,7 @@ public class LogInFragment extends Fragment {
         final String password = editPassword.getText().toString().trim();
 
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
-        String url = "http://192.168.1.82/MealPlannerDatabase/login.php";
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/login.php";
 
         if (username.isEmpty() || password.isEmpty()) {
             emptyInputFieldsMsg.setVisibility(TextView.VISIBLE);

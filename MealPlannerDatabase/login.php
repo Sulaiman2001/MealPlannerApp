@@ -31,6 +31,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     echo json_encode(array("status" => "error", "message" => "Invalid parameters"));
 }
 
-// Close the database connection
+// Close the database
 $conn->close();
 ?>

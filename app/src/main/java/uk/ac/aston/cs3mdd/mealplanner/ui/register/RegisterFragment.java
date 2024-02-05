@@ -120,7 +120,7 @@ public class RegisterFragment extends Fragment {
 
 
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
-        String url = "http://192.168.1.82/MealPlannerDatabase/register.php";
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/register.php";
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
