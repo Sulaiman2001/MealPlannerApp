@@ -3,6 +3,8 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,15 +52,19 @@ public class MealsFragment extends Fragment {
 
         meals = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView);
-        mealsAdapter = new MealsAdapter(meals);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Pass the FragmentManager to MealsAdapter
+        mealsAdapter = new MealsAdapter(meals, getChildFragmentManager());
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(mealsAdapter);
 
         fetchMealData();
 
         return rootView;
     }
+
 
     private void fetchMealData(){
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
@@ -120,4 +126,6 @@ public class MealsFragment extends Fragment {
 
         Toast.makeText(getActivity(), "Error fetching meal data: " + error.getMessage(), Toast.LENGTH_SHORT). show();
     }
+
+
 }

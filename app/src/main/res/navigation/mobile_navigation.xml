@@ -35,7 +35,21 @@
         android:id="@+id/meals"
         android:name="uk.ac.aston.cs3mdd.mealplanner.ui.meals.MealsFragment"
         android:label="Meals"
-        tools:layout="@layout/fragment_meals"/>
+        tools:layout="@layout/fragment_meals">
+        <action
+            android:id="@+id/action_meals_to_mealDetails"
+            app:destination="@id/mealDetails" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mealDetails"
+        android:name="uk.ac.aston.cs3mdd.mealplanner.ui.meals.MealDetailsFragment"
+        android:label="More info"
+        tools:layout="@layout/fragment_meal_details">
+        <action
+            android:id="@+id/action_mealDetails_to_meals"
+            app:destination="@id/meals" />
+    </fragment>
 
     <fragment
         android:id="@+id/favourites"
