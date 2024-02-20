@@ -1,41 +1,196 @@
 <!-- fragment_meal_details.xml -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ui.meals.MealDetailsFragment">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/blue_cards"
         />
-
-    <TextView
-        android:id="@+id/titleTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="70dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/vegetarianTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:text="Hello"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_cards"
+            android:layout_marginVertical="10dp"
+            >
 
-    <TextView
-        android:id="@+id/veganTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/clock_white"
+                android:paddingLeft="2dp"
+                />
+            <TextView
+                android:id="@+id/cookingTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                android:paddingStart="2dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="2dp"
+                android:text="1 hour 15 mins"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/vegetarianTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_cards"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="Vegetarian"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
-    <!-- Add more TextViews or other UI components as needed -->
+            <TextView
+                android:id="@+id/veganTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/blue_cards"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="Vegan"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
+        <TextView
+            android:id="@+id/servesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_cards"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Serves"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginVertical="10dp"
+            />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ingredientsButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ingredients"
+                android:checked="true"
+                android:buttonTint="@color/blue"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+            <RadioButton
+                android:id="@+id/recipeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="Recipe"
+                android:buttonTint="@color/blue"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </RadioGroup>
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/text_box_container"
+                >
+                <TextView
+                    android:id="@+id/mealInformationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textSize="17dp"/>
+            </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/addToMealPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                app:icon="@drawable/navbar_meal_plan"
+                app:iconTint="@color/white"
+                android:backgroundTint="@color/blue"
+                android:text="Add to meal planner"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:outlineSpotShadowColor="@color/white"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/favouriteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                app:icon="@drawable/navbar_favourite"
+                app:iconTint="@color/white"
+                android:backgroundTint="@color/blue"
+                android:text="Favourite"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:outlineSpotShadowColor="@color/white"
+                android:layout_alignParentEnd="true"
+                />
+
+
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

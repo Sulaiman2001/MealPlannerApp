@@ -1,5 +1,7 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.login;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,7 +34,7 @@ import uk.ac.aston.cs3mdd.mealplanner.R;
 
 public class LogInFragment extends Fragment {
 
-    private static final String LogInTest = "LogInFragment";
+    public static final String LogInTest = "LogInFragment";
 
     private EditText editUsername, editPassword;
     private Button registerButton, logInButton;
@@ -117,6 +119,15 @@ public class LogInFragment extends Fragment {
             String message = jsonResponse.getString("message");
 
             if ("success".equals(status)) {
+                String user_id = jsonResponse.getString("user_id");
+
+                // Save user_id in shared preferences
+                SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("user_id", user_id);
+                editor.apply();
+
+                Log.i(LogInTest, "Retrieved user_id: " + user_id);
                 Log.i(LogInTest, "Log in successful. Message: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(R.id.action_log_in_to_meals);
@@ -152,5 +163,6 @@ public class LogInFragment extends Fragment {
 
         return data;
     }
+
 
 }

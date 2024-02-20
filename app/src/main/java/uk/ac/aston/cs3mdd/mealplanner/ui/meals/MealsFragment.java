@@ -93,18 +93,23 @@ public class MealsFragment extends Fragment {
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject mealJson = response.getJSONObject(i);
+                    Integer mealID = mealJson.getInt("meal_id");
                     String title = mealJson.getString("title");
                     String imagePath = mealJson.getString("imagePath");
-                    String isVegan = mealJson.getString("vegan");
-                    String isVegetarian = mealJson.getString("vegetarian");
+                    Boolean isVegan = mealJson.getInt("vegan") == 1;
+                    Boolean isVegetarian = mealJson.getInt("vegetarian") == 1;
+                    String cookingTime = mealJson.getString("time_to_cook");
+                    String recipe = mealJson.getString("recipe");
+                    String ingredients = mealJson.getString("ingredients");
+                    Integer serves = mealJson.getInt("serves");
 
-                    Meal meal = new Meal(title, imagePath, isVegetarian, isVegan);
+
+                    Meal meal = new Meal(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves);
 
                     meals.add(meal);
                 }
                 mealsAdapter.notifyDataSetChanged();
             } else {
-                // Handle the case when the response is empty or not a JSON array
                 Log.e(TAG, "Empty or invalid JSON array");
             }
         } catch (JSONException e) {
@@ -112,6 +117,7 @@ public class MealsFragment extends Fragment {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());
         }
     }
+
 
 
     private void handleFetchMealDataError(VolleyError error){

@@ -1,6 +1,7 @@
 package uk.ac.aston.cs3mdd.mealplanner;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,6 +56,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Handle the back button press here
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+            if (!navController.popBackStack()) {
+                // If there is no back stack, finish the activity
+                finish();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -38,8 +38,10 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
+        holder.cookingTime.setText(meal.getCookingTime());
+
         // Set title
-        holder.titleTextView.setText(meal.getTitle());
+        holder.title.setText(meal.getTitle());
 
         if ("1".equals(meal.getIsVegan())) {
             holder.vegan.setVisibility(View.VISIBLE);
@@ -47,15 +49,18 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             holder.vegan.setVisibility(View.GONE);
         }
 
-        // Check if it's vegetarian and set visibility accordingly
-        if ("1".equals(meal.getIsVegetarian())) {
+        if (meal.getIsVegan()){
+            holder.vegan.setVisibility(View.VISIBLE);
+        } else {
+            holder.vegan.setVisibility(View.GONE);
+        }
+
+        if (meal.getIsVegetarian()){
             holder.vegetarian.setVisibility(View.VISIBLE);
         } else {
             holder.vegetarian.setVisibility(View.GONE);
         }
 
-        // Load image using a library like Picasso or Glide
-        // Example using Picasso:
         Picasso.get().load(meal.getImagePath()).into(holder.imageView);
 
         // Set onClickListener for the mealDetails button
@@ -77,28 +82,45 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     }
 
     class MealViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
+        TextView mealID;
+        TextView title;
         ImageView imageView;
         TextView vegan;
         TextView vegetarian;
         Button mealDetails;
+        TextView cookingTime;
+        TextView recipe;
+        TextView ingredients;
+        TextView serves;
+
 
         public MealViewHolder(View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.titleTextView);
+            //mealID = itemView.findViewById(R.id.mealIDTextView);
+            title = itemView.findViewById(R.id.titleTextView);
             imageView = itemView.findViewById(R.id.imageView);
             vegan = itemView.findViewById(R.id.vegan);
             vegetarian = itemView.findViewById(R.id.vegetarian);
+            cookingTime = itemView.findViewById(R.id.cookingTimeTextView);
             mealDetails = itemView.findViewById(R.id.mealDetails);
+            recipe = itemView.findViewById(R.id.mealInformationTextView);
+            ingredients = itemView.findViewById(R.id.mealInformationTextView);
+            serves = itemView.findViewById(R.id.servesTextView);
+
         }
     }
 
     private void openMealDetailsFragment(Meal meal, View view) {
         Bundle bundle = new Bundle();
+        bundle.putInt("mealID", meal.getMealID());
         bundle.putString("title", meal.getTitle());
         bundle.putString("imagePath", meal.getImagePath());
-        bundle.putString("isVegetarian", meal.getIsVegetarian());
-        bundle.putString("isVegan", meal.getIsVegan());
+        bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
+        bundle.putBoolean("isVegan", meal.getIsVegan());
+        bundle.putString("time_to_cook", meal.getCookingTime());
+        bundle.putString("recipe", meal.getRecipe());
+        bundle.putString("ingredients", meal.getIngredients());
+        bundle.putInt("serves", meal.getServes());
 
         Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);
 

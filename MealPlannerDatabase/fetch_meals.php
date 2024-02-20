@@ -1,13 +1,17 @@
 <?php
 include "conn.php";
 
-$sql = "SELECT title, imagePath, vegan, vegetarian FROM meal"; 
+$sql = "SELECT meal_id, title, imagePath, vegan, vegetarian, time_to_cook, recipe, ingredients, serves FROM meal"; 
 $result = $conn->query($sql);
+
+
 
 if ($result->num_rows > 0) {
     $mealsArray = array();
 
     while ($row = $result->fetch_assoc()) {
+        $meal_id = $row['meal_id'];
+
         $title = $row['title'];
         $imageName = $row['imagePath'];
         
@@ -17,7 +21,16 @@ if ($result->num_rows > 0) {
 
         $vegetarian = $row['vegetarian'];
 
-        $mealsArray[] = array('title' => $title, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian);
+        $time_to_cook = $row['time_to_cook'];
+
+        $ingredients = $row['ingredients'];
+
+        $recipe = $row['recipe'];
+
+        $serves = $row['serves'];
+
+
+        $mealsArray[] = array('meal_id' => $meal_id, 'title' => $title, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian, 'time_to_cook' => $time_to_cook, 'recipe' => $recipe, 'ingredients' => $ingredients, 'serves' => $serves);
     }
 
     echo json_encode($mealsArray);
@@ -27,3 +40,4 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+

@@ -13,11 +13,12 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     // Check if a user with the provided username exists
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
+
         
         // Use password_verify() to check the password
         if (password_verify($password, $user['password'])) {
             // Password is correct, return user data
-            echo json_encode(array("status" => "success", "message" => "Login successful", "user" => $user));
+            echo json_encode(array("status" => "success", "message" => "Login successful", "user_id" => $user['user_id'], "user" => $user));
         } else {
             // Password is incorrect
             echo json_encode(array("status" => "error", "message" => "Incorrect password"));
