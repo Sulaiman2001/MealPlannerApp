@@ -1,4 +1,4 @@
-package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
+package uk.ac.aston.cs3mdd.mealplanner.ui.favourites;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,24 +18,27 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
+import uk.ac.aston.cs3mdd.mealplanner.ui.meals.Meal;
+import uk.ac.aston.cs3mdd.mealplanner.ui.meals.MealsAdapter;
 
-public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
+// FavouritesAdapter.java
+public class FavouritesAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
     private List<Meal> meals;
     private FragmentManager fragmentManager;
 
-    public MealsAdapter(List<Meal> meals, FragmentManager fragmentManager) {
+    public FavouritesAdapter(List<Meal> meals, FragmentManager fragmentManager) {
         this.meals = meals;
         this.fragmentManager = fragmentManager;
     }
 
     @Override
-    public MealViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_item, parent, false);
-        return new MealViewHolder(view);
+    public MealsAdapter.MealViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favourite_meal_item, parent, false);
+        return new MealsAdapter.MealViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MealsAdapter.MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
         holder.cookingTime.setText(meal.getCookingTime());
@@ -81,14 +84,14 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         return meals.size();
     }
 
-    public static class MealViewHolder extends RecyclerView.ViewHolder {
+    public class MealViewHolder extends RecyclerView.ViewHolder {
         TextView mealID;
-        public TextView title;
-        public ImageView imageView;
-        public TextView vegan;
-        public TextView vegetarian;
-        public Button mealDetails;
-        public TextView cookingTime;
+        TextView title;
+        ImageView imageView;
+        TextView vegan;
+        TextView vegetarian;
+        Button mealDetails;
+        TextView cookingTime;
         TextView recipe;
         TextView ingredients;
         TextView serves;
@@ -106,7 +109,6 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
-
         }
     }
 
@@ -122,7 +124,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
 
-        Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);
+        Navigation.findNavController(view).navigate(R.id.action_favourites_to_mealDetails, bundle);
 
     }
 }

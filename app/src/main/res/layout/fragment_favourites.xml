@@ -6,18 +6,20 @@
     tools:context=".ui.favourites.FavouritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/favouritesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
         android:clipToPadding="false"
         android:scrollbars="vertical"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        android:layout_marginBottom="50dp"/>
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        >
     </FrameLayout>
 
 </RelativeLayout>

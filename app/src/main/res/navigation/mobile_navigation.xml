@@ -49,13 +49,20 @@
         <action
             android:id="@+id/action_mealDetails_to_meals"
             app:destination="@id/meals" />
+        <action
+            android:id="@+id/action_mealDetails_to_favourites"
+            app:destination="@id/favourites" />
     </fragment>
 
     <fragment
         android:id="@+id/favourites"
         android:name="uk.ac.aston.cs3mdd.mealplanner.ui.favourites.FavouritesFragment"
         android:label="Favourites"
-        tools:layout="@layout/fragment_favourites"/>
+        tools:layout="@layout/fragment_favourites">
+        <action
+            android:id="@+id/action_favourites_to_mealDetails"
+            app:destination="@id/mealDetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/meal_plan"
