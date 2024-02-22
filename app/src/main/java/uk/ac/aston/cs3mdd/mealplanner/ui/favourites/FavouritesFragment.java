@@ -56,7 +56,7 @@ public class FavouritesFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.favouritesRecyclerView);
 
         // Pass the FragmentManager to FavouritesAdapter
-        favouritesAdapter = new FavouritesAdapter(favouriteMeals, getChildFragmentManager());
+        favouritesAdapter = new FavouritesAdapter(favouriteMeals, getChildFragmentManager(), requireContext());
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);

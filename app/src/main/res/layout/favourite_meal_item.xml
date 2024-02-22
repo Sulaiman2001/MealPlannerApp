@@ -90,6 +90,7 @@
             android:textSize="10dp"
             android:textStyle="bold" />
     </LinearLayout>
+
     <Button
         android:id="@+id/mealDetails"
         android:layout_width="150dp"
@@ -104,15 +105,14 @@
 
     <Button
         android:id="@+id/delete"
-        android:layout_width="150dp"
+        android:layout_width="154dp"
         android:layout_height="40dp"
         android:layout_gravity="center|bottom"
-        android:text="Delete"
         android:backgroundTint="@color/white"
+        android:text="Delete"
         android:textColor="@color/blue"
         android:textSize="10dp"
-        android:textStyle="bold"
-        android:visibility="visible"/>
+        android:textStyle="bold" />
 
 </LinearLayout>
 
