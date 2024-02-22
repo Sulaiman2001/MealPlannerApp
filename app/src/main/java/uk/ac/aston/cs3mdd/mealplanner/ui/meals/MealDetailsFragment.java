@@ -128,7 +128,6 @@ public class MealDetailsFragment extends Fragment {
                     Log.d("MealDetailsFragment", "meal_id: " + mealID);
                     Log.d("MealDetailsFragment", "is_favourited: " + "1"); // Assuming it's always set to 1
 
-                    Toast.makeText(requireContext(), "Meal favourited! User ID: " + user_id, Toast.LENGTH_SHORT).show();
                     markAsFavourite();
                 }
             });
@@ -218,18 +217,19 @@ public class MealDetailsFragment extends Fragment {
 
             if ("success".equals(status)) {
                 // Handle success (e.g., update UI)
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Meal favourited!", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle failure (e.g., show error message)
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                Log.e(MealDetailsTest, "Server Response: " + response);
+                Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
             }
-            Log.e(MealDetailsTest, "Server Response: " + response);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(MealDetailsTest, "JSON parsing error: " + e.getMessage());
             Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
     private void handleFavouriteError(VolleyError error) {

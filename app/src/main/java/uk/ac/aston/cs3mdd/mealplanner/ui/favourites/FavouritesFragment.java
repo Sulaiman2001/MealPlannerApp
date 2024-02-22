@@ -84,6 +84,7 @@ public class FavouritesFragment extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("meals");
+
                             handleFetchFavouriteMealsResponse(jsonArray);
                         } catch (JSONException e) {
                             handleFetchFavouriteMealsError(new VolleyError("Invalid JSON response", e));
