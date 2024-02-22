@@ -10,9 +10,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // SQL query to insert data into the users table
-    $query = "INSERT INTO favourites (user_favourite_id, meal_favourite_id, is_favourited) VALUES ('$user_favourite_id', '$meal_favourite_id', '$is_favourited')";
-    $result = mysqli_query($connection, $query);
-    
+    $query = "INSERT INTO user (username, password) VALUES ('$username', '$hashedPassword')";
+
     // Execute the query and check for success
     if ($conn->query($query) === TRUE) {
         echo json_encode(array("status" => "success", "message" => "Registration successful"));
