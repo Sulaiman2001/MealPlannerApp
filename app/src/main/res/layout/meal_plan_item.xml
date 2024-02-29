@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/blue_cards"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="20dp"
+    android:padding="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dietary_icon"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="2dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dietary_icon"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/clock_blue"
+            android:paddingStart="5dp"
+            />
+        <TextView
+            android:id="@+id/cookingTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:textAlignment="center"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="2dp"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="2dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/vegetarian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dietary_icon"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Vegetarian"
+            android:textColor="@color/blue"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vegan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/dietary_icon"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Vegan"
+            android:textColor="@color/blue"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/mealDetails"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center|bottom"
+        android:text="Find out more"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/blue"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center|bottom"
+        android:text="Delete"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/blue"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:visibility="visible"/>
+
+</LinearLayout>
+
