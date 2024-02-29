@@ -1,7 +1,6 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
-import static uk.ac.aston.cs3mdd.mealplanner.ui.login.LogInFragment.LogInTest;
-
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -33,16 +33,18 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
-import uk.ac.aston.cs3mdd.mealplanner.ui.login.LogInFragment;
 
 public class MealDetailsFragment extends Fragment {
 
     private static final String MealDetailsTest = "MealDetailsFragment";
 
+    private String user_id;
+    private Integer mealID;  // Changed data type to Integer
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -73,13 +75,13 @@ public class MealDetailsFragment extends Fragment {
 
         // Retrieve user_id from shared preferences
         SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
-        String user_id = preferences.getString("user_id", "");
+        user_id = preferences.getString("user_id", "");  // Using instance variable
 
         // Retrieve data from arguments
         Bundle bundle = getArguments();
         if (bundle != null) {
 
-            Integer mealID = bundle.getInt("mealID");
+            mealID = bundle.getInt("mealID");  // Using instance variable
             String title = bundle.getString("title");
             String imagePath = bundle.getString("imagePath");
             Boolean isVegetarian = bundle.getBoolean("isVegetarian");
@@ -88,7 +90,6 @@ public class MealDetailsFragment extends Fragment {
             String ingredients = bundle.getString("ingredients");
             Integer serves = bundle.getInt("serves");
 
-            //TextView mealIDTextView = rootView.findViewById(R.id.mealIDTextView);
             TextView titleTextView = rootView.findViewById(R.id.titleTextView);
             ImageView imageView = rootView.findViewById(R.id.imageView);
             TextView vegetarianTextView = rootView.findViewById(R.id.vegetarianTextView);
@@ -101,20 +102,15 @@ public class MealDetailsFragment extends Fragment {
             Button favouriteButton = rootView.findViewById(R.id.favouriteButton);
             Button addToMealPlan = rootView.findViewById(R.id.addToMealPlan);
 
-
-            //mealIDTextView.setText("MealID: " + mealID);
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
-            //vegetarianTextView.setText(isVegetarian);
-            //veganTextView.setText(isVegan);
-            // Set visibility for vegetarianTextView based on isVegetarian
+
             if (isVegetarian) {
                 vegetarianTextView.setVisibility(View.VISIBLE);
             } else {
                 vegetarianTextView.setVisibility(View.GONE);
             }
 
-            // Set visibility for veganTextView based on isVegan
             if (isVegan) {
                 veganTextView.setVisibility(View.VISIBLE);
             } else {
@@ -135,7 +131,7 @@ public class MealDetailsFragment extends Fragment {
             addToMealPlan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(requireContext(), "Add to meal plan!", Toast.LENGTH_SHORT).show();
+                    showDatePickerDialog();
                 }
             });
 
@@ -144,9 +140,7 @@ public class MealDetailsFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        // Load and display ingredients from the database
                         ingredientsTextView.setText(ingredients);
-                        // Ensure the other button is unchecked
                         recipeButton.setChecked(false);
                     } else {
                         recipeTextView.setText(recipe);
@@ -154,26 +148,13 @@ public class MealDetailsFragment extends Fragment {
                 }
             });
             servesTextView.setText("Serves " + serves);
-
         }
         return rootView;
     }
 
     private void markAsFavourite() {
-        // Retrieve mealID from the arguments
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            Integer mealID = bundle.getInt("mealID");
-
-            // Retrieve user_id from shared preferences
-            SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
-            String user_id = preferences.getString("user_id", "");
-
-            // Call sendFavouriteRequest with user_id and mealID
-            sendFavouriteRequest(user_id, String.valueOf(mealID));
-        }
+        sendFavouriteRequest(user_id, String.valueOf(mealID));
     }
-
 
     private void sendFavouriteRequest(String user_id, String mealID) {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
@@ -195,17 +176,12 @@ public class MealDetailsFragment extends Fragment {
         ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = createFavouriteParams(user_id, mealID);
-                Log.d(MealDetailsTest, "Request Parameters: " + params.toString());
-                return params;
+                return createFavouriteParams(user_id, mealID);
             }
         };
 
-        // Add the request to the RequestQueue
         queue.add(postRequest);
     }
-
-
 
     private void handleFavouriteResponse(String response) {
         Log.d(MealDetailsTest, "Raw Server Response: " + response);
@@ -216,10 +192,8 @@ public class MealDetailsFragment extends Fragment {
             String message = jsonResponse.getString("message");
 
             if ("success".equals(status)) {
-                // Handle success (e.g., update UI)
-                Toast.makeText(requireContext(), "Meal favourited!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Meal favorited!", Toast.LENGTH_SHORT).show();
             } else {
-                // Handle failure (e.g., show error message)
                 Log.e(MealDetailsTest, "Server Response: " + response);
                 Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
             }
@@ -229,8 +203,6 @@ public class MealDetailsFragment extends Fragment {
             Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     private void handleFavouriteError(VolleyError error) {
         Log.e(MealDetailsTest, "Volley error: " + error.getMessage(), error);
@@ -245,7 +217,6 @@ public class MealDetailsFragment extends Fragment {
         Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-
     private Map<String, String> createFavouriteParams(String user_id, String mealID) {
         Map<String, String> data = new HashMap<>();
         data.put("user_id", user_id);
@@ -255,5 +226,86 @@ public class MealDetailsFragment extends Fragment {
         return data;
     }
 
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                        String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                        onDateSelected(selectedDate);
+                    }
+                }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+    private void onDateSelected(String selectedDate) {
+        Toast.makeText(requireContext(), "Selected Date: " + selectedDate, Toast.LENGTH_SHORT).show();
+        addToMealPlan(user_id, String.valueOf(mealID), selectedDate);
+    }
+
+    private void addToMealPlan(String user_id, String mealID, String selectedDate) {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/add_to_meal_plan.php";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        handleAddToMealPlanResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handleAddToMealPlanError(error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return createAddToMealPlanParams(user_id, mealID, selectedDate);
+            }
+        };
+
+        queue.add(postRequest);
+    }
+
+    private void handleAddToMealPlanResponse(String response) {
+        try {
+            JSONObject jsonResponse = new JSONObject(response);
+            String status = jsonResponse.getString("status");
+            String message = jsonResponse.getString("message");
+
+            if ("success".equals(status)) {
+                Toast.makeText(requireContext(), "Meal added to the plan!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(MealDetailsTest, "JSON parsing error: " + e.getMessage());
+            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleAddToMealPlanError(VolleyError error) {
+        Log.e(MealDetailsTest, "Volley error: " + error.getMessage(), error);
+        Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private Map<String, String> createAddToMealPlanParams(String user_id, String mealID, String selectedDate) {
+        Map<String, String> data = new HashMap<>();
+        data.put("user_id", user_id);
+        data.put("meal_id", mealID);
+        data.put("date", selectedDate);
+
+        return data;
+    }
 }

@@ -93,7 +93,6 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         TextView ingredients;
         TextView serves;
 
-
         public MealViewHolder(View itemView) {
             super(itemView);
             //mealID = itemView.findViewById(R.id.mealIDTextView);
@@ -120,6 +119,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         bundle.putString("time_to_cook", meal.getCookingTime());
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
+        bundle.putInt("serves", meal.getServes());
         bundle.putInt("serves", meal.getServes());
 
         Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);

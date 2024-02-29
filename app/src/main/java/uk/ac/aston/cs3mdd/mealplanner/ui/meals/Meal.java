@@ -12,6 +12,7 @@ public class Meal {
     private Integer serves;
 
 
+
     public Meal(Integer mealID, String title, String imagePath, Boolean isVegetarian, Boolean isVegan, String cookingTime, String recipe, String ingredients, Integer serves) {
         this.mealID = mealID;
         this.title = title;
@@ -22,7 +23,6 @@ public class Meal {
         this.recipe = recipe;
         this.ingredients = ingredients;
         this.serves = serves;
-
     }
 
     public Integer getMealID() {

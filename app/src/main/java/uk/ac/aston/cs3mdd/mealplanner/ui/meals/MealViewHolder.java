@@ -31,6 +31,5 @@ public class MealViewHolder extends RecyclerView.ViewHolder {
         recipe = itemView.findViewById(R.id.mealInformationTextView);
         ingredients = itemView.findViewById(R.id.mealInformationTextView);
         serves = itemView.findViewById(R.id.servesTextView);
-
     }
 }

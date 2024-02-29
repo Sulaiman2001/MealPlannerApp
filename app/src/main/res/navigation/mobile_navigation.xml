@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_mealDetails_to_favourites"
             app:destination="@id/favourites" />
+        <action
+            android:id="@+id/action_mealDetails_to_meal_plan"
+            app:destination="@id/meal_plan" />
     </fragment>
 
     <fragment
@@ -68,7 +71,11 @@
         android:id="@+id/meal_plan"
         android:name="uk.ac.aston.cs3mdd.mealplanner.ui.mealPlan.MealPlanFragment"
         android:label="Meal Plan"
-        tools:layout="@layout/fragment_meal_plan"/>
+        tools:layout="@layout/fragment_meal_plan">
+        <action
+            android:id="@+id/action_meal_plan_to_mealDetails"
+            app:destination="@id/mealDetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/shopping_list"
