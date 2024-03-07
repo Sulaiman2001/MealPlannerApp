@@ -37,7 +37,7 @@
             android:textSize="15dp"
             android:textAlignment="center"
             android:paddingStart="2dp"
-            android:paddingEnd="5dp"
+            android:paddingEnd="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="2dp"/>
     </LinearLayout>
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/clock_blue"
             android:paddingStart="5dp"
+            android:paddingTop="5dp"
             />
         <TextView
             android:id="@+id/cookingTimeTextView"
@@ -61,10 +62,10 @@
             android:textColor="@color/blue"
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
-            android:textSize="10dp"
+            android:textSize="15dp"
             android:textAlignment="center"
             android:paddingStart="2dp"
-            android:paddingEnd="5dp"
+            android:paddingEnd="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="2dp"/>
     </LinearLayout>

@@ -73,9 +73,23 @@
         android:label="Meal Plan"
         tools:layout="@layout/fragment_meal_plan">
         <action
-            android:id="@+id/action_meal_plan_to_mealDetails"
+            android:id="@+id/action_meal_plan_to_meal_plan_history"
+            app:destination="@id/meal_plan_history" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/meal_plan_history"
+        android:name="uk.ac.aston.cs3mdd.mealplanner.ui.mealPlan.MealPlanHistoryFragment"
+        android:label="Meal Plan History"
+        tools:layout="@layout/fragment_meal_plan_history">
+        <action
+            android:id="@+id/action_meal_plan_history_to_meal_plan"
+            app:destination="@id/meal_plan" />
+        <action
+            android:id="@+id/action_meal_plan_history_to_mealDetails"
             app:destination="@id/mealDetails" />
     </fragment>
+
 
     <fragment
         android:id="@+id/shopping_list"

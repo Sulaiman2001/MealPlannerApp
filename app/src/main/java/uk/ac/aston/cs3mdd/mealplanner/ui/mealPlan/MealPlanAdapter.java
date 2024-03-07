@@ -38,11 +38,13 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     private List<MealPlan> mealPlans;
     private FragmentManager fragmentManager;
     private Context context;
+    private boolean showDeleteButton;
 
-    public MealPlanAdapter(List<MealPlan> mealPlans, FragmentManager fragmentManager, Context context) {
+    public MealPlanAdapter(List<MealPlan> mealPlans, FragmentManager fragmentManager, Context context, boolean showDeleteButton) {
         this.mealPlans = mealPlans;
         this.fragmentManager = fragmentManager;
         this.context = context;
+        this.showDeleteButton = showDeleteButton;
     }
 
     @Override
@@ -55,6 +57,8 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealPlan mealPlan = mealPlans.get(position);
+
+        holder.delete.setVisibility(showDeleteButton ? View.VISIBLE : View.GONE);
 
         holder.date.setText(mealPlan.getDate());
         holder.cookingTime.setText(mealPlan.getCookingTime());
@@ -200,7 +204,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         bundle.putInt("serves", meal.getServes());
         bundle.putString("date", meal.getDate());
 
-        Navigation.findNavController(view).navigate(R.id.action_meal_plan_to_mealDetails, bundle);
+        Navigation.findNavController(view).navigate(R.id.action_meal_plan_history_to_mealDetails, bundle);
     }
 
 

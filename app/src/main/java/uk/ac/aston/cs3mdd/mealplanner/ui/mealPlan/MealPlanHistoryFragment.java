@@ -3,23 +3,21 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.mealPlan;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -38,42 +36,32 @@ import java.util.Map;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
 
-public class MealPlanFragment extends Fragment {
-
+public class MealPlanHistoryFragment extends Fragment {
     private static final String TAG = "MealPlanFragment";
     private List<MealPlan> mealPlans;
     private RecyclerView recyclerView;
     private MealPlanAdapter mealPlanAdapter;
 
-    public MealPlanFragment() {
+    public MealPlanHistoryFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_meal_plan, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_meal_plan_history, container, false);
 
         mealPlans = new ArrayList<>();
-        recyclerView = rootView.findViewById(R.id.mealPlanRecyclerView);
+        recyclerView = rootView.findViewById(R.id.mealPlanHistoryRecyclerView);
 
         // Pass the FragmentManager to MealPlanAdapter
-        mealPlanAdapter = new MealPlanAdapter(mealPlans, getChildFragmentManager(), requireContext(), true);
+        mealPlanAdapter = new MealPlanAdapter(mealPlans, getChildFragmentManager(), requireContext(), false);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(mealPlanAdapter);
 
         loadMealPlans();
-
-        Button mealPlanHistoryButton = rootView.findViewById(R.id.MealPlanHistory);
-        mealPlanHistoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Navigate to the MealPlanHistoryFragment
-                Navigation.findNavController(view).navigate(R.id.action_meal_plan_to_meal_plan_history);
-            }
-        });
 
         return rootView;
     }
@@ -128,7 +116,7 @@ public class MealPlanFragment extends Fragment {
                     String date = mealJson.getString("date");
 
                     // Skip meals with dates that have passed
-                    if (isDatePassed(date)) {
+                    if (isDateBeforeToday(date)) {
                         continue;
                     }
 
@@ -178,17 +166,18 @@ public class MealPlanFragment extends Fragment {
         } else {
             Log.e(TAG, "No network response");
         }
+
         Toast.makeText(getActivity(), "Error fetching meal plan data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    private boolean isDatePassed(String date) {
+    private boolean isDateBeforeToday(String date) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date mealDate = sdf.parse(date);
             Date currentDate = new Date();
 
             // Compare dates without considering the time
-            return mealDate.before(removeTime(currentDate)) || currentDate.equals(removeTime(mealDate));
+            return !mealDate.after(removeTime(currentDate));
         } catch (ParseException e) {
             // Handle parsing exception if needed
             e.printStackTrace();
