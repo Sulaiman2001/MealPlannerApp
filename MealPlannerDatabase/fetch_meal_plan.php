@@ -20,7 +20,8 @@ if ($user_id === null) {
 $sql = "SELECT mp.date, m.meal_id, m.title, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves 
         FROM meal_plan mp
         JOIN meal m ON mp.meal_id = m.meal_id
-        WHERE mp.user_id = ?";
+        WHERE mp.user_id = ?
+        ORDER BY mp.date ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
