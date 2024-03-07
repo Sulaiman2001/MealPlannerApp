@@ -105,6 +105,7 @@ public class MealDetailsFragment extends Fragment {
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
 
+
             if (isVegetarian) {
                 vegetarianTextView.setVisibility(View.VISIBLE);
             } else {

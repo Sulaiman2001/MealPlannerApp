@@ -6,14 +6,14 @@ public class Meal {
     private String imagePath;
     private Boolean isVegan;
     private Boolean isVegetarian;
-    private String cookingTime;
+    private Integer cookingTime;
     private String recipe;
     private String ingredients;
     private Integer serves;
 
 
 
-    public Meal(Integer mealID, String title, String imagePath, Boolean isVegetarian, Boolean isVegan, String cookingTime, String recipe, String ingredients, Integer serves) {
+    public Meal(Integer mealID, String title, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves) {
         this.mealID = mealID;
         this.title = title;
         this.imagePath = imagePath;
@@ -40,7 +40,7 @@ public class Meal {
     public Boolean getIsVegetarian() {
         return isVegetarian;
     }
-    public String getCookingTime() {
+    public Integer getCookingTime() {
         return cookingTime;
     }
     public String getRecipe() {

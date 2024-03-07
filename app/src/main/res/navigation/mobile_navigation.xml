@@ -65,6 +65,7 @@
         <action
             android:id="@+id/action_favourites_to_mealDetails"
             app:destination="@id/mealDetails" />
+
     </fragment>
 
     <fragment
@@ -75,6 +76,9 @@
         <action
             android:id="@+id/action_meal_plan_to_meal_plan_history"
             app:destination="@id/meal_plan_history" />
+        <action
+            android:id="@+id/action_meal_plan_to_mealDetails"
+            app:destination="@id/mealDetails" />
     </fragment>
 
     <fragment

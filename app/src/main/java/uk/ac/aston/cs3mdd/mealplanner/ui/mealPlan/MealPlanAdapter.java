@@ -61,7 +61,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         holder.delete.setVisibility(showDeleteButton ? View.VISIBLE : View.GONE);
 
         holder.date.setText(mealPlan.getDate());
-        holder.cookingTime.setText(mealPlan.getCookingTime());
+        holder.cookingTime.setText(String.valueOf(mealPlan.getCookingTime()));
         holder.title.setText(mealPlan.getTitle());
 
         if ("1".equals(mealPlan.getIsVegan())) {
@@ -198,13 +198,19 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         bundle.putString("imagePath", meal.getImagePath());
         bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
         bundle.putBoolean("isVegan", meal.getIsVegan());
-        bundle.putString("time_to_cook", meal.getCookingTime());
+        bundle.putInt("time_to_cook", meal.getCookingTime());
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
         bundle.putString("date", meal.getDate());
 
-        Navigation.findNavController(view).navigate(R.id.action_meal_plan_history_to_mealDetails, bundle);
+        if (showDeleteButton == false){
+            Navigation.findNavController(view).navigate(R.id.action_meal_plan_history_to_mealDetails, bundle);
+
+        } else {
+            Navigation.findNavController(view).navigate(R.id.action_meal_plan_to_mealDetails, bundle);
+        }
+
     }
 
 

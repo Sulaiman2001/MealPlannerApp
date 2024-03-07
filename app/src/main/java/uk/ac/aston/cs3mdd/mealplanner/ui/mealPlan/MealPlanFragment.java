@@ -137,7 +137,7 @@ public class MealPlanFragment extends Fragment {
                     String imagePath = mealJson.getString("imagePath");
                     Boolean isVegan = mealJson.getInt("vegan") == 1;
                     Boolean isVegetarian = mealJson.getInt("vegetarian") == 1;
-                    String cookingTime = mealJson.getString("time_to_cook");
+                    Integer cookingTime = mealJson.getInt("time_to_cook");
                     String recipe = mealJson.getString("recipe");
                     String ingredients = mealJson.getString("ingredients");
                     Integer serves = mealJson.getInt("serves");

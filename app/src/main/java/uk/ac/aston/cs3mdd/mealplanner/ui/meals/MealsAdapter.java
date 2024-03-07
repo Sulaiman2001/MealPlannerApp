@@ -38,7 +38,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
-        holder.cookingTime.setText(meal.getCookingTime());
+        holder.cookingTime.setText(String.valueOf(meal.getCookingTime()));
 
         // Set title
         holder.title.setText(meal.getTitle());
@@ -116,7 +116,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         bundle.putString("imagePath", meal.getImagePath());
         bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
         bundle.putBoolean("isVegan", meal.getIsVegan());
-        bundle.putString("time_to_cook", meal.getCookingTime());
+        bundle.putInt("time_to_cook", meal.getCookingTime());
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
