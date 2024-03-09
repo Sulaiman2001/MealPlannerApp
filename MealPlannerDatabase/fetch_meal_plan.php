@@ -17,7 +17,7 @@ if ($user_id === null) {
     exit;
 }
 
-$sql = "SELECT mp.date, m.meal_id, m.title, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves 
+$sql = "SELECT mp.date, m.meal_id, m.title, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count 
         FROM meal_plan mp
         JOIN meal m ON mp.meal_id = m.meal_id
         WHERE mp.user_id = ?
@@ -48,6 +48,7 @@ while ($row = $result->fetch_assoc()) {
     $recipe = $row['recipe'];
     $serves = $row['serves'];
     $date = $row['date'];
+    $favourite_count = $row['favourite_count'];
 
     // Create a MealPlan object
     $mealPlan = array(
@@ -60,7 +61,8 @@ while ($row = $result->fetch_assoc()) {
         'recipe' => $recipe,
         'ingredients' => $ingredients,
         'serves' => $serves,
-        'date' => $date
+        'date' => $date,
+        'favourite_count' => $favourite_count
     );
 
     // Add the MealPlan object to the mealsArray

@@ -1,7 +1,7 @@
 <?php
 include "conn.php";
 
-$sql = "SELECT meal_id, title, imagePath, vegan, vegetarian, time_to_cook, recipe, ingredients, serves FROM meal"; 
+$sql = "SELECT meal_id, title, imagePath, vegan, vegetarian, time_to_cook, recipe, ingredients, serves, favourite_count FROM meal"; 
 $result = $conn->query($sql);
 
 
@@ -29,8 +29,10 @@ if ($result->num_rows > 0) {
 
         $serves = $row['serves'];
 
+        $favourite_count = $row['favourite_count'];
 
-        $mealsArray[] = array('meal_id' => $meal_id, 'title' => $title, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian, 'time_to_cook' => $time_to_cook, 'recipe' => $recipe, 'ingredients' => $ingredients, 'serves' => $serves);
+
+        $mealsArray[] = array('meal_id' => $meal_id, 'title' => $title, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian, 'time_to_cook' => $time_to_cook, 'recipe' => $recipe, 'ingredients' => $ingredients, 'serves' => $serves, 'favourite_count' => $favourite_count);
     }
 
     echo json_encode($mealsArray);

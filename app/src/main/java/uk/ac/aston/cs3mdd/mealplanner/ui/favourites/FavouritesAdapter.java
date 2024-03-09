@@ -64,6 +64,8 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         // Set title
         holder.title.setText(meal.getTitle());
 
+        holder.favouriteCount.setText(String.valueOf(meal.getFavouriteCount()));
+
         if ("1".equals(meal.getIsVegan())) {
             holder.vegan.setVisibility(View.VISIBLE);
         } else {
@@ -114,6 +116,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         TextView ingredients;
         TextView serves;
         Button delete;
+        TextView favouriteCount;
 
         public MealViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +130,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
+            favouriteCount = itemView.findViewById(R.id.favouriteCount);
 
             delete = itemView.findViewById(R.id.delete);
             delete.setOnClickListener(view -> {
@@ -203,6 +207,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
+        bundle.putInt("favourite_count", meal.getFavouriteCount());
 
         Navigation.findNavController(view).navigate(R.id.action_favourites_to_mealDetails, bundle);
 

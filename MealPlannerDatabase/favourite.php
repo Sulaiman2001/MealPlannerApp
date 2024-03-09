@@ -38,6 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['me
                 $result = mysqli_stmt_execute($insertStmt);
 
                 if ($result) {
+                    // Increment the favourite_count in the meal table
+                    $updateQuery = "UPDATE meal SET favourite_count = favourite_count + 1 WHERE meal_id = ?";
+                    $updateStmt = mysqli_prepare($conn, $updateQuery);
+
+                    if ($updateStmt) {
+                        mysqli_stmt_bind_param($updateStmt, "i", $meal_favourite_id);
+                        mysqli_stmt_execute($updateStmt);
+                        mysqli_stmt_close($updateStmt);
+                    } else {
+                        // Handle update statement preparation error
+                        $response['status'] = 'error';
+                        $response['message'] = 'Failed to prepare update statement';
+                        echo json_encode($response);
+                        exit;
+                    }
+
                     $response['status'] = 'success';
                     $response['message'] = 'Meal added to favorites successfully';
                 } else {

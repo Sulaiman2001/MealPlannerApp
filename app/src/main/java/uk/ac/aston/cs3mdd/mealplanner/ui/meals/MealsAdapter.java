@@ -1,6 +1,7 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
         // Set title
         holder.title.setText(meal.getTitle());
+
+        holder.favouriteCount.setText(String.valueOf(meal.getFavouriteCount()));
 
         if ("1".equals(meal.getIsVegan())) {
             holder.vegan.setVisibility(View.VISIBLE);
@@ -92,6 +95,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         TextView recipe;
         TextView ingredients;
         TextView serves;
+        TextView favouriteCount;
 
         public MealViewHolder(View itemView) {
             super(itemView);
@@ -105,6 +109,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
+            favouriteCount = itemView.findViewById(R.id.favouriteCount);
 
         }
     }
@@ -120,7 +125,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
-        bundle.putInt("serves", meal.getServes());
+        bundle.putInt("favourite_count", meal.getFavouriteCount());
 
         Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);
 

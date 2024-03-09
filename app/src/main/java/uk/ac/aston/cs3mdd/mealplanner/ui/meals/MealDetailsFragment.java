@@ -89,6 +89,7 @@ public class MealDetailsFragment extends Fragment {
             String recipe = bundle.getString("recipe");
             String ingredients = bundle.getString("ingredients");
             Integer serves = bundle.getInt("serves");
+            Integer favouriteCount = bundle.getInt("favourite_count");
 
             TextView titleTextView = rootView.findViewById(R.id.titleTextView);
             ImageView imageView = rootView.findViewById(R.id.imageView);
@@ -101,10 +102,12 @@ public class MealDetailsFragment extends Fragment {
             TextView servesTextView = rootView.findViewById(R.id.servesTextView);
             Button favouriteButton = rootView.findViewById(R.id.favouriteButton);
             Button addToMealPlan = rootView.findViewById(R.id.addToMealPlan);
+            TextView favouriteCountTextView = rootView.findViewById(R.id.favouriteCount);
 
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
 
+            favouriteCountTextView.setText(String.valueOf(favouriteCount));
 
             if (isVegetarian) {
                 vegetarianTextView.setVisibility(View.VISIBLE);

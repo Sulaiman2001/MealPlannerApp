@@ -27,6 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,9 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         holder.date.setText(mealPlan.getDate());
         holder.cookingTime.setText(String.valueOf(mealPlan.getCookingTime()));
         holder.title.setText(mealPlan.getTitle());
+
+        holder.favouriteCount.setText(String.valueOf(mealPlan.getFavouriteCount()));
+
 
         if ("1".equals(mealPlan.getIsVegan())) {
             holder.vegan.setVisibility(View.VISIBLE);
@@ -115,6 +120,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         TextView serves;
         TextView date;
         Button delete;
+        TextView favouriteCount;
 
 
         public MealViewHolder(View itemView) {
@@ -130,7 +136,10 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
+            favouriteCount = itemView.findViewById(R.id.favouriteCount);
+
             delete = itemView.findViewById(R.id.delete);
+
             delete.setOnClickListener(view -> {
                 Log.d(TAG, "Delete button clicked");
                 int position = getAdapterPosition();
@@ -203,6 +212,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
         bundle.putString("date", meal.getDate());
+        bundle.putInt("favourite_count", meal.getFavouriteCount());
 
         if (showDeleteButton == false){
             Navigation.findNavController(view).navigate(R.id.action_meal_plan_history_to_mealDetails, bundle);

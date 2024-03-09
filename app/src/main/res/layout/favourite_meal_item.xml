@@ -11,29 +11,67 @@
     >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dietary_icon"
-        android:layout_marginBottom="5dp">
+        android:orientation="horizontal">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/clock_blue"
-            />
-        <TextView
-            android:id="@+id/cookingTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/blue"
+            android:background="@drawable/dietary_icon"
             android:layout_marginBottom="5dp"
-            android:textStyle="bold"
-            android:textSize="10dp"
-            android:textAlignment="center"
-            android:paddingStart="2dp"
-            android:paddingEnd="5dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="2dp"/>
+            android:layout_marginRight="2dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clock_blue"
+                />
+            <TextView
+                android:id="@+id/cookingTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:textAlignment="center"
+                android:paddingStart="2dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="2dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutFavourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dietary_icon"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/heart"
+                android:layout_marginLeft="2dp"
+                />
+            <TextView
+                android:id="@+id/favouriteCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:textAlignment="center"
+                android:paddingStart="2dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="2dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 

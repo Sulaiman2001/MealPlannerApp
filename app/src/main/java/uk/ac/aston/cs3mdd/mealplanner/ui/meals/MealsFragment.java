@@ -102,9 +102,10 @@ public class MealsFragment extends Fragment {
                     String recipe = mealJson.getString("recipe");
                     String ingredients = mealJson.getString("ingredients");
                     Integer serves = mealJson.getInt("serves");
+                    Integer favouriteCount = mealJson.getInt("favourite_count");
 
 
-                    Meal meal = new Meal(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves);
+                    Meal meal = new Meal(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount);
 
                     meals.add(meal);
                 }
