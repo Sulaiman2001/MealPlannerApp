@@ -39,7 +39,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
-        holder.cookingTime.setText(String.valueOf(meal.getCookingTime()));
+        holder.cookingTime.setText(formatCookingTime(meal.getCookingTime()));
 
         // Set title
         holder.title.setText(meal.getTitle());
@@ -130,4 +130,20 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);
 
     }
+
+    private String formatCookingTime(int cookingTimeInMinutes) {
+        int hours = cookingTimeInMinutes / 60;
+        int minutes = cookingTimeInMinutes % 60;
+
+        if (hours > 0) {
+            if (minutes > 0) {
+                return hours + " hrs " + minutes + " mins";
+            } else {
+                return hours + " hrs";
+            }
+        } else {
+            return minutes + " mins";
+        }
+    }
+
 }

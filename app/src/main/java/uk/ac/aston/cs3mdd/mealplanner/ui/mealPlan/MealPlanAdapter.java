@@ -63,7 +63,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         holder.delete.setVisibility(showDeleteButton ? View.VISIBLE : View.GONE);
 
         holder.date.setText(mealPlan.getDate());
-        holder.cookingTime.setText(String.valueOf(mealPlan.getCookingTime()));
+        holder.cookingTime.setText(formatCookingTime(mealPlan.getCookingTime()));
         holder.title.setText(mealPlan.getTitle());
 
         holder.favouriteCount.setText(String.valueOf(mealPlan.getFavouriteCount()));
@@ -221,6 +221,21 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             Navigation.findNavController(view).navigate(R.id.action_meal_plan_to_mealDetails, bundle);
         }
 
+    }
+
+    private String formatCookingTime(int cookingTimeInMinutes) {
+        int hours = cookingTimeInMinutes / 60;
+        int minutes = cookingTimeInMinutes % 60;
+
+        if (hours > 0) {
+            if (minutes > 0) {
+                return hours + " hrs " + minutes + " mins";
+            } else {
+                return hours + " hrs";
+            }
+        } else {
+            return minutes + " mins";
+        }
     }
 
 
