@@ -2,7 +2,9 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.mealPlan;
 
 import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,6 +102,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
                 }
             }
         });
+
     }
 
     @Override
@@ -145,9 +148,10 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     MealPlan clickedMeal = mealPlans.get(position);
-                    deleteMealFromMealPlan(clickedMeal, position);
+                    showDeleteConfirmationDialog(clickedMeal, position);
                 }
             });
+
         }
         private void deleteMealFromMealPlan(MealPlan mealPlan, int position) {
             Log.d(TAG, "deletMealFromMealPlan called");
@@ -192,6 +196,32 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             queue.add(stringRequest);
             Log.d(TAG, "deleteMealFromMealPlan completed");
         }
+
+        private void showDeleteConfirmationDialog(MealPlan mealPlan, int position) {
+            // Create a confirmation dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Delete Meal from Meal Plan");
+            builder.setMessage("Are you sure you want to delete this meal from your meal plan?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Call the method to delete the meal from the meal plan
+                    deleteMealFromMealPlan(mealPlan, position);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Dismiss the dialog if "No" is clicked
+                    dialog.dismiss();
+                }
+            });
+
+            // Show the confirmation dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
 
         private String getUserIDFromSharedPreferences(Context context){
             SharedPreferences preferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE);

@@ -2,7 +2,9 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.favourites;
 
 import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -147,45 +149,63 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         private void deleteMealFromFavourites(Meal meal, int position) {
             Log.d(TAG, "deleteMealFromFavourites called");
 
-            Log.d(TAG, "Deleting meal with ID: " + meal.getMealID());
-
-            // Call the server to delete the meal from favourites
-            RequestQueue queue = Volley.newRequestQueue(context);
-            String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_favourite_meal.php";
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Handle the response if needed
-                            Log.d(TAG, "Response from server after deletion: " + response);
-                            // Remove the meal from the local list
-                            meals.remove(position);
-                            notifyItemRemoved(position);
-                            // Show a toast or provide feedback to the user
-                            Toast.makeText(itemView.getContext(), "Meal deleted from favourites", Toast.LENGTH_SHORT).show();
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Handle the error if needed
-                            Log.e(TAG, "Error deleting meal from favourites: " + error.getMessage(), error);
-                            // Show a toast or provide feedback to the user
-                            Toast.makeText(itemView.getContext(), "Error deleting meal from favourites", Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
+            // Create a confirmation dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+            builder.setTitle("Delete Meal from Favorites");
+            builder.setMessage("Are you sure you want to delete this meal from your favorites?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("user_id", getUserIDFromSharedPreferences(context));
-                    params.put("meal_id", String.valueOf(meal.getMealID()));
-                    return params;
-                }
-            };
+                public void onClick(DialogInterface dialog, int which) {
+                    // Call the server to delete the meal from favorites
+                    RequestQueue queue = Volley.newRequestQueue(context);
+                    String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_favourite_meal.php";
 
-            queue.add(stringRequest);
-            Log.d(TAG, "deleteMealFromFavourites completed");
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    // Handle the response if needed
+                                    Log.d(TAG, "Response from server after deletion: " + response);
+                                    // Remove the meal from the local list
+                                    meals.remove(position);
+                                    notifyItemRemoved(position);
+                                    // Show a toast or provide feedback to the user
+                                    Toast.makeText(itemView.getContext(), "Meal deleted from favorites", Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    // Handle the error if needed
+                                    Log.e(TAG, "Error deleting meal from favorites: " + error.getMessage(), error);
+                                    // Show a toast or provide feedback to the user
+                                    Toast.makeText(itemView.getContext(), "Error deleting meal from favorites", Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("user_id", getUserIDFromSharedPreferences(context));
+                            params.put("meal_id", String.valueOf(meal.getMealID()));
+                            return params;
+                        }
+                    };
+
+                    queue.add(stringRequest);
+                    Log.d(TAG, "deleteMealFromFavourites completed");
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Dismiss the dialog if "No" is clicked
+                    dialog.dismiss();
+                }
+            });
+
+            // Show the confirmation dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         private String getUserIDFromSharedPreferences(Context context){
