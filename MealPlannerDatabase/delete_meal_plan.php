@@ -18,21 +18,35 @@ if ($user_id === null || $meal_id === null) {
     exit;
 }
 
-$sql = "DELETE FROM meal_plan WHERE user_id = ? AND meal_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ii", $user_id, $meal_id);
-$stmt->execute();
+// Delete meal from meal_plan
+$sql_delete_meal = "DELETE FROM meal_plan WHERE user_id = ? AND meal_id = ?";
+$stmt_delete_meal = $conn->prepare($sql_delete_meal);
+$stmt_delete_meal->bind_param("ii", $user_id, $meal_id);
+$stmt_delete_meal->execute();
 
-if ($stmt->error) {
-    $error = array('error' => 'Error in executing SQL statement: ' . $stmt->error);
+if ($stmt_delete_meal->error) {
+    $error = array('error' => 'Error in executing SQL statement (meal_plan): ' . $stmt_delete_meal->error);
+    echo json_encode($error);
+    exit;
+}
+
+// Delete ingredients from shopping_list
+$sql_delete_ingredients = "DELETE FROM shopping_list WHERE user_id = ? AND shopping_list_meal_id = ?";
+$stmt_delete_ingredients = $conn->prepare($sql_delete_ingredients);
+$stmt_delete_ingredients->bind_param("ii", $user_id, $meal_id);
+$stmt_delete_ingredients->execute();
+
+if ($stmt_delete_ingredients->error) {
+    $error = array('error' => 'Error in executing SQL statement (shopping_list): ' . $stmt_delete_ingredients->error);
     echo json_encode($error);
     exit;
 }
 
 // Send a success response
-$response = array('status' => 'success', 'message' => 'Meal deleted from favorites successfully.');
+$response = array('status' => 'success', 'message' => 'Meal and corresponding ingredients deleted successfully.');
 echo json_encode($response);
 
-$stmt->close();
+$stmt_delete_meal->close();
+$stmt_delete_ingredients->close();
 $conn->close();
 ?>

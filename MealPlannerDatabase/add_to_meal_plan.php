@@ -19,7 +19,7 @@ if ($conn->query($sql_meal_plan) === TRUE) {
             $quantity = $row['value']; // Adjust as needed
 
             // Insert into shopping_list
-            $sql_shopping_list = "INSERT INTO shopping_list (user_id, ingredient_id) VALUES ('$user_id', '$ingredient_id')";
+            $sql_shopping_list = "INSERT INTO shopping_list (user_id, ingredient_id, shopping_list_meal_id) VALUES ('$user_id', '$ingredient_id', '$meal_id')";
             $conn->query($sql_shopping_list);
         }
 
