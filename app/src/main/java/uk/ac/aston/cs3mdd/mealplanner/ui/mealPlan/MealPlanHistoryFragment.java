@@ -178,7 +178,7 @@ public class MealPlanHistoryFragment extends Fragment {
             Date currentDate = new Date();
 
             // Compare dates without considering the time
-            return !mealDate.after(removeTime(currentDate));
+            return mealDate.after(removeTime(currentDate));
         } catch (ParseException e) {
             // Handle parsing exception if needed
             e.printStackTrace();
