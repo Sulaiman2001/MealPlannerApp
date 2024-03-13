@@ -23,10 +23,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView ingredientNameTextView;
+        TextView valueTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
             ingredientNameTextView = itemView.findViewById(R.id.ingredientNameTextView);
+            valueTextView = itemView.findViewById(R.id.valueTextView);
         }
     }
 
@@ -41,6 +43,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ingredients item = shoppingItemList.get(position);
         holder.ingredientNameTextView.setText(item.getIngredientName());
+        String valueWithSpace = item.getValue() + " " + item.getUnit(); // Concatenate value and unit with a space
+        holder.valueTextView.setText(valueWithSpace);
     }
 
     @Override

@@ -110,10 +110,14 @@ public class ShoppingListFragment extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String ingredientName = jsonObject.getString("ingredientName");
+                Integer value = jsonObject.getInt("value");
+                String unit = jsonObject.getString("unit");
 
                 // Create an Ingredients object and add it to the list
                 Ingredients ingredients = new Ingredients();
                 ingredients.setIngredientName(ingredientName);
+                ingredients.setValue(value);
+                ingredients.setUnit(unit);
                 shoppingItemList.add(ingredients);
             }
 

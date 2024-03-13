@@ -5,7 +5,7 @@ include "conn.php";
 $user_id = $_POST['user_id'];
 
 // Assuming you have a column in your shopping_list table named 'ingredient_id'
-$sql = "SELECT DISTINCT ingredients.ingredient_name
+$sql = "SELECT ingredients.ingredient_name, ingredients.value, ingredients.unit
         FROM shopping_list
         INNER JOIN ingredients ON shopping_list.ingredient_id = ingredients.ingredient_id
         WHERE shopping_list.user_id = '$user_id'";
@@ -17,11 +17,18 @@ $response = array();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Assuming 'ingredient_name' is the column name in your database
         $ingredientName = $row['ingredient_name'];
+        $value = $row['value'];
+        $unit = $row['unit'];
+
 
         // Add the ingredient to the response array
-        $response[] = array("ingredientName" => $ingredientName);
+        $response[] = array(
+            "ingredientName" => $ingredientName,
+            "value" => $value,
+            "unit" => $unit
+        );
+        
     }
 
     // Send JSON response
