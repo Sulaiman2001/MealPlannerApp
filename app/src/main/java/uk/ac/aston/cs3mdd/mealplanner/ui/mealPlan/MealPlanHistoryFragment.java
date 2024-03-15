@@ -177,7 +177,6 @@ public class MealPlanHistoryFragment extends Fragment {
             Date mealDate = sdf.parse(date);
             Date currentDate = new Date();
 
-            // Compare dates without considering the time
             return mealDate.after(removeTime(currentDate));
         } catch (ParseException e) {
             // Handle parsing exception if needed

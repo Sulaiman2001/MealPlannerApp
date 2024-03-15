@@ -10,7 +10,7 @@ $sql_meal_plan = "INSERT INTO meal_plan (user_id, meal_id, date) VALUES ('$user_
 
 if ($conn->query($sql_meal_plan) === TRUE) {
     // Retrieve ingredients for the chosen meal
-    $sql_get_ingredients = "SELECT * FROM ingredients WHERE meal_ingredient_id IN (SELECT ingredient_id FROM ingredients WHERE meal_ingredient_id = '$meal_id')";
+    $sql_get_ingredients = "SELECT * FROM ingredients WHERE meal_ingredient_id = '$meal_id'";
     $result_ingredients = $conn->query($sql_get_ingredients);
 
     if ($result_ingredients->num_rows > 0) {
@@ -18,7 +18,7 @@ if ($conn->query($sql_meal_plan) === TRUE) {
             $ingredient_id = $row['ingredient_id'];
             $quantity = $row['value']; // Adjust as needed
 
-            // Insert into shopping_list
+            // Insert into shopping_list with the correct meal ID
             $sql_shopping_list = "INSERT INTO shopping_list (user_id, ingredient_id, shopping_list_meal_id) VALUES ('$user_id', '$ingredient_id', '$meal_id')";
             $conn->query($sql_shopping_list);
         }

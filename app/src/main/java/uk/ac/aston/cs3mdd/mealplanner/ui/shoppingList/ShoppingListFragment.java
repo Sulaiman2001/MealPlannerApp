@@ -110,15 +110,28 @@ public class ShoppingListFragment extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String ingredientName = jsonObject.getString("ingredientName");
-                Integer value = jsonObject.getInt("value");
+                Integer value = jsonObject.getInt("total_value");
                 String unit = jsonObject.getString("unit");
 
-                // Create an Ingredients object and add it to the list
-                Ingredients ingredients = new Ingredients();
-                ingredients.setIngredientName(ingredientName);
-                ingredients.setValue(value);
-                ingredients.setUnit(unit);
-                shoppingItemList.add(ingredients);
+                // Check if the ingredient already exists in the list
+                boolean found = false;
+                for (Ingredients item : shoppingItemList) {
+                    if (item.getIngredientName().equals(ingredientName)) {
+                        // Update the value of the existing ingredient
+                        item.setValue(item.getValue() + value);
+                        found = true;
+                        break;
+                    }
+                }
+
+                // If the ingredient is not found, add it to the list
+                if (!found) {
+                    Ingredients ingredients = new Ingredients();
+                    ingredients.setIngredientName(ingredientName);
+                    ingredients.setValue(value);
+                    ingredients.setUnit(unit);
+                    shoppingItemList.add(ingredients);
+                }
             }
 
             adapter.notifyDataSetChanged();
@@ -127,6 +140,7 @@ public class ShoppingListFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
 
 }
