@@ -29,6 +29,10 @@ if ($stmt->error) {
     exit;
 }
 
+$updateQuery = "UPDATE meal SET favourite_count = favourite_count - 1 WHERE meal_id = ?";
+$updateStmt = $conn->prepare($updateQuery);
+$updateStmt->bind_param("i", $meal_id);
+$updateStmt->execute();
 // Send a success response
 $response = array('status' => 'success', 'message' => 'Meal deleted from favorites successfully.');
 echo json_encode($response);
