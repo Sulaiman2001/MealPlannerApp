@@ -83,6 +83,7 @@ public class MealDetailsFragment extends Fragment {
 
             mealID = bundle.getInt("mealID");  // Using instance variable
             String title = bundle.getString("title");
+            String mealType = bundle.getString("meal_type");
             String imagePath = bundle.getString("imagePath");
             Boolean isVegetarian = bundle.getBoolean("isVegetarian");
             Boolean isVegan = bundle.getBoolean("isVegan");
@@ -92,6 +93,7 @@ public class MealDetailsFragment extends Fragment {
             Integer favouriteCount = bundle.getInt("favourite_count");
 
             TextView titleTextView = rootView.findViewById(R.id.titleTextView);
+            TextView mealTypeTextView = rootView.findViewById(R.id.mealTypeTextView);
             ImageView imageView = rootView.findViewById(R.id.imageView);
             TextView vegetarianTextView = rootView.findViewById(R.id.vegetarianTextView);
             TextView veganTextView = rootView.findViewById(R.id.veganTextView);
@@ -106,6 +108,7 @@ public class MealDetailsFragment extends Fragment {
 
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
+            mealTypeTextView.setText(mealType);
 
             favouriteCountTextView.setText(String.valueOf(favouriteCount));
 

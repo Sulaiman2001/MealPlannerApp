@@ -113,11 +113,12 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     public class MealViewHolder extends RecyclerView.ViewHolder {
         TextView mealID;
         public TextView title;
-        public ImageView imageView;
-        public TextView vegan;
-        public TextView vegetarian;
-        public Button mealDetails;
-        public TextView cookingTime;
+        TextView mealType;
+        ImageView imageView;
+        TextView vegan;
+        TextView vegetarian;
+        Button mealDetails;
+        TextView cookingTime;
         TextView recipe;
         TextView ingredients;
         TextView serves;
@@ -125,12 +126,12 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         Button delete;
         TextView favouriteCount;
 
-
         public MealViewHolder(View itemView) {
             super(itemView);
 
             date = itemView.findViewById(R.id.dateTextView);
             title = itemView.findViewById(R.id.titleTextView);
+            mealType = itemView.findViewById(R.id.mealTypeTextView);
             imageView = itemView.findViewById(R.id.imageView);
             vegan = itemView.findViewById(R.id.vegan);
             vegetarian = itemView.findViewById(R.id.vegetarian);
@@ -234,6 +235,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         Bundle bundle = new Bundle();
         bundle.putInt("mealID", meal.getMealID());
         bundle.putString("title", meal.getTitle());
+        bundle.putString("meal_type", meal.getMealType());
         bundle.putString("imagePath", meal.getImagePath());
         bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
         bundle.putBoolean("isVegan", meal.getIsVegan());

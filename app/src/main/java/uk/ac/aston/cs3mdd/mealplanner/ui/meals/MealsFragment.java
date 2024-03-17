@@ -3,15 +3,14 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -60,10 +59,138 @@ public class MealsFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(mealsAdapter);
 
+        Button allFilterButton = rootView.findViewById(R.id.allFilter);
+        allFilterButton.setBackgroundResource(R.drawable.active_button_background);
+
+        Button veganFilterButton = rootView.findViewById(R.id.veganFilter);
+        veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        Button vegetarianFilterButton = rootView.findViewById(R.id.vegetarianFilter);
+        vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        Button timeFilterButton = rootView.findViewById(R.id.timeFilter);
+        timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        Button breakfastFilterButton = rootView.findViewById(R.id.breakfastFilter);
+        breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        Button lunchFilterButton = rootView.findViewById(R.id.lunchFilter);
+        lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        Button dinnerFilterButton = rootView.findViewById(R.id.dinnerFilter);
+        dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+        allFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchMealData();
+                allFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+
+        veganFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only vegan meals
+                fetchVeganMeals();
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+        vegetarianFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only vegetarian meals
+                fetchVegetarianMeals();
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+
+        timeFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only vegetarian meals
+                fetchMealsLessThan60mins();
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+
+        breakfastFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only breakfast meals
+                fetchMealsByType("breakfast");
+                // Update button backgrounds
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+
+        lunchFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only lunch meals
+                fetchMealsByType("lunch");
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.active_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+            }
+        });
+
+        dinnerFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Fetch only dinner meals
+                fetchMealsByType("dinner");
+                allFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                veganFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                vegetarianFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                timeFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+                dinnerFilterButton.setBackgroundResource(R.drawable.active_button_background);
+            }
+        });
+
+
+        // fetch all meals
         fetchMealData();
 
         return rootView;
     }
+
 
 
     private void fetchMealData(){
@@ -74,6 +201,107 @@ public class MealsFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        meals.clear();
+                        handleFetchMealDataResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handleFetchMealDataError(error);
+                    }
+                });
+
+        // Add the request to the RequestQueue
+        queue.add(jsonArrayRequest);
+    }
+
+    private void fetchVeganMeals() {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?vegan=1";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Clear the existing list of meals
+                        meals.clear();
+                        // Handle the response to populate the list with vegan meals
+                        handleFetchMealDataResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handleFetchMealDataError(error);
+                    }
+                });
+
+        // Add the request to the RequestQueue
+        queue.add(jsonArrayRequest);
+    }
+
+    private void fetchVegetarianMeals() {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?vegetarian=1";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Clear the existing list of meals
+                        meals.clear();
+                        // Handle the response to populate the list with vegan meals
+                        handleFetchMealDataResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handleFetchMealDataError(error);
+                    }
+                });
+
+        // Add the request to the RequestQueue
+        queue.add(jsonArrayRequest);
+    }
+
+    private void fetchMealsLessThan60mins() {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?cooking_time=1";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Clear the existing list of meals
+                        meals.clear();
+                        // Handle the response to populate the list with vegan meals
+                        handleFetchMealDataResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handleFetchMealDataError(error);
+                    }
+                });
+
+        // Add the request to the RequestQueue
+        queue.add(jsonArrayRequest);
+    }
+
+    private void fetchMealsByType(String mealType) {
+        RequestQueue queue = Volley.newRequestQueue(requireActivity());
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?meal_type=" + mealType;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Clear the existing list of meals
+                        meals.clear();
+                        // Handle the response to populate the list with meals of specified type
                         handleFetchMealDataResponse(response);
                     }
                 },
@@ -93,8 +321,12 @@ public class MealsFragment extends Fragment {
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject mealJson = response.getJSONObject(i);
+                    // Log the meal information
+                    Log.d(TAG, "Received meal JSON: " + mealJson.toString());
+
                     Integer mealID = mealJson.getInt("meal_id");
                     String title = mealJson.getString("title");
+                    String mealType = mealJson.getString("meal_type");
                     String imagePath = mealJson.getString("imagePath");
                     Boolean isVegan = mealJson.getInt("vegan") == 1;
                     Boolean isVegetarian = mealJson.getInt("vegetarian") == 1;
@@ -104,8 +336,7 @@ public class MealsFragment extends Fragment {
                     Integer serves = mealJson.getInt("serves");
                     Integer favouriteCount = mealJson.getInt("favourite_count");
 
-
-                    Meal meal = new Meal(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount);
+                    Meal meal = new Meal(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount);
 
                     meals.add(meal);
                 }
@@ -118,6 +349,7 @@ public class MealsFragment extends Fragment {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());
         }
     }
+
 
 
 

@@ -11,6 +11,7 @@ import uk.ac.aston.cs3mdd.mealplanner.R;
 public class MealViewHolder extends RecyclerView.ViewHolder {
     TextView mealID;
     TextView title;
+    TextView mealType;
     ImageView imageView;
     TextView vegan;
     TextView vegetarian;
@@ -25,6 +26,7 @@ public class MealViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         //mealID = itemView.findViewById(R.id.mealIDTextView);
         title = itemView.findViewById(R.id.titleTextView);
+        mealType = itemView.findViewById(R.id.mealTypeTextView);
         imageView = itemView.findViewById(R.id.imageView);
         vegan = itemView.findViewById(R.id.vegan);
         vegetarian = itemView.findViewById(R.id.vegetarian);

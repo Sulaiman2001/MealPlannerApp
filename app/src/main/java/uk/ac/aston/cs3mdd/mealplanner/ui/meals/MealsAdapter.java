@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
@@ -46,19 +48,15 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
         holder.favouriteCount.setText(String.valueOf(meal.getFavouriteCount()));
 
-        if ("1".equals(meal.getIsVegan())) {
+        // Check if the meal is vegan and update the visibility of the vegan TextView accordingly
+        if (meal.getIsVegan()) {
             holder.vegan.setVisibility(View.VISIBLE);
         } else {
             holder.vegan.setVisibility(View.GONE);
         }
 
-        if (meal.getIsVegan()){
-            holder.vegan.setVisibility(View.VISIBLE);
-        } else {
-            holder.vegan.setVisibility(View.GONE);
-        }
-
-        if (meal.getIsVegetarian()){
+        // Check if the meal is vegetarian and update the visibility of the vegetarian TextView accordingly
+        if (meal.getIsVegetarian()) {
             holder.vegetarian.setVisibility(View.VISIBLE);
         } else {
             holder.vegetarian.setVisibility(View.GONE);
@@ -86,12 +84,13 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
     public static class MealViewHolder extends RecyclerView.ViewHolder {
         TextView mealID;
-        public TextView title;
-        public ImageView imageView;
-        public TextView vegan;
-        public TextView vegetarian;
-        public Button mealDetails;
-        public TextView cookingTime;
+        TextView title;
+        TextView mealType;
+        ImageView imageView;
+        TextView vegan;
+        TextView vegetarian;
+        Button mealDetails;
+        TextView cookingTime;
         TextView recipe;
         TextView ingredients;
         TextView serves;
@@ -101,6 +100,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             super(itemView);
             //mealID = itemView.findViewById(R.id.mealIDTextView);
             title = itemView.findViewById(R.id.titleTextView);
+            mealType = itemView.findViewById(R.id.mealTypeTextView);
             imageView = itemView.findViewById(R.id.imageView);
             vegan = itemView.findViewById(R.id.vegan);
             vegetarian = itemView.findViewById(R.id.vegetarian);
@@ -118,6 +118,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         Bundle bundle = new Bundle();
         bundle.putInt("mealID", meal.getMealID());
         bundle.putString("title", meal.getTitle());
+        bundle.putString("meal_type", meal.getMealType());
         bundle.putString("imagePath", meal.getImagePath());
         bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
         bundle.putBoolean("isVegan", meal.getIsVegan());

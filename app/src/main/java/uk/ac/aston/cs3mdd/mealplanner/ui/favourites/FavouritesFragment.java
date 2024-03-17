@@ -120,6 +120,7 @@ public class FavouritesFragment extends Fragment {
                     JSONObject mealJson = response.getJSONObject(i);
                     Integer mealID = mealJson.getInt("meal_id");
                     String title = mealJson.getString("title");
+                    String mealType = mealJson.getString("meal_type");
                     String imagePath = mealJson.getString("imagePath");
                     Boolean isVegan = mealJson.getInt("vegan") == 1;
                     Boolean isVegetarian = mealJson.getInt("vegetarian") == 1;
@@ -129,7 +130,7 @@ public class FavouritesFragment extends Fragment {
                     Integer serves = mealJson.getInt("serves");
                     Integer favouriteCount = mealJson.getInt("favourite_count");
 
-                    Meal meal = new Meal(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount);
+                    Meal meal = new Meal(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount);
 
                     favouriteMeals.add(meal);
                 }

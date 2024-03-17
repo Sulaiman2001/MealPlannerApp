@@ -134,6 +134,7 @@ public class MealPlanFragment extends Fragment {
 
                     Integer mealID = mealJson.getInt("meal_id");
                     String title = mealJson.getString("title");
+                    String mealType = mealJson.getString("meal_type");
                     String imagePath = mealJson.getString("imagePath");
                     Boolean isVegan = mealJson.getInt("vegan") == 1;
                     Boolean isVegetarian = mealJson.getInt("vegetarian") == 1;
@@ -143,7 +144,7 @@ public class MealPlanFragment extends Fragment {
                     Integer serves = mealJson.getInt("serves");
                     Integer favouriteCount = mealJson.getInt("favourite_count");
 
-                    MealPlan mealPlan = new MealPlan(mealID, title, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount);
+                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount);
 
                     mealPlans.add(mealPlan);
                 }

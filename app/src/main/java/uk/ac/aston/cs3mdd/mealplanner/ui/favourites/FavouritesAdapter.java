@@ -109,6 +109,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
     public class MealViewHolder extends RecyclerView.ViewHolder {
         TextView mealID;
         TextView title;
+        TextView mealType;
         ImageView imageView;
         TextView vegan;
         TextView vegetarian;
@@ -124,6 +125,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             super(itemView);
             //mealID = itemView.findViewById(R.id.mealIDTextView);
             title = itemView.findViewById(R.id.titleTextView);
+            mealType = itemView.findViewById(R.id.mealTypeTextView);
             imageView = itemView.findViewById(R.id.imageView);
             vegan = itemView.findViewById(R.id.vegan);
             vegetarian = itemView.findViewById(R.id.vegetarian);
@@ -220,6 +222,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         Bundle bundle = new Bundle();
         bundle.putInt("mealID", meal.getMealID());
         bundle.putString("title", meal.getTitle());
+        bundle.putString("meal_type", meal.getMealType());
         bundle.putString("imagePath", meal.getImagePath());
         bundle.putBoolean("isVegetarian", meal.getIsVegetarian());
         bundle.putBoolean("isVegan", meal.getIsVegan());

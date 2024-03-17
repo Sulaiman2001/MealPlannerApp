@@ -3,6 +3,7 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 public class Meal {
     private Integer mealID;
     private String title;
+    private String mealType;
     private String imagePath;
     private Boolean isVegan;
     private Boolean isVegetarian;
@@ -14,9 +15,10 @@ public class Meal {
 
 
 
-    public Meal(Integer mealID, String title, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves, Integer favouriteCount) {
+    public Meal(Integer mealID, String title,String mealType, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves, Integer favouriteCount) {
         this.mealID = mealID;
         this.title = title;
+        this.mealType = mealType;
         this.imagePath = imagePath;
         this.isVegan = isVegan;
         this.isVegetarian = isVegetarian;
@@ -33,6 +35,7 @@ public class Meal {
     public String getTitle() {
         return title;
     }
+    public String getMealType() {return mealType;}
     public String getImagePath() {
         return imagePath;
     }
@@ -53,5 +56,6 @@ public class Meal {
     }
     public Integer getServes() { return serves; }
     public Integer getFavouriteCount(){ return favouriteCount;}
+
 
 }

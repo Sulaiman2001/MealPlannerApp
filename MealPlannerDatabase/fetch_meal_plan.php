@@ -17,7 +17,7 @@ if ($user_id === null) {
     exit;
 }
 
-$sql = "SELECT mp.date, m.meal_id, m.title, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count 
+$sql = "SELECT mp.date, m.meal_id, m.title, m.meal_type, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count 
         FROM meal_plan mp
         JOIN meal m ON mp.meal_id = m.meal_id
         WHERE mp.user_id = ?
@@ -39,6 +39,7 @@ $mealsArray = array();
 while ($row = $result->fetch_assoc()) {
     $meal_id = $row['meal_id'];
     $title = $row['title'];
+    $mealType = $row['meal_type'];
     $imageName = $row['imagePath'];
     $imagePath = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/images/$imageName";
     $vegan = $row['vegan'];
@@ -54,6 +55,7 @@ while ($row = $result->fetch_assoc()) {
     $mealPlan = array(
         'meal_id' => $meal_id,
         'title' => $title,
+        'meal_type' => $mealType,
         'imagePath' => $imagePath,
         'vegan' => $vegan,
         'vegetarian' => $vegetarian,
