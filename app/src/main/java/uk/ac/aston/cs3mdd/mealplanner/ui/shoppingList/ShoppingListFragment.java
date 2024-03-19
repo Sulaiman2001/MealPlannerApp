@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class ShoppingListFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.recyclerView);
         shoppingItemList = new ArrayList<>();
-        adapter = new ShoppingListAdapter(shoppingItemList);
+        adapter = new ShoppingListAdapter(shoppingItemList, requireContext());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -113,12 +114,20 @@ public class ShoppingListFragment extends Fragment {
                 Integer value = jsonObject.getInt("total_value");
                 String unit = jsonObject.getString("unit");
 
+                // Fetch the meals associated with the ingredient
+                JSONArray mealsArray = jsonObject.getJSONArray("meals"); // Retrieve meals array
+                List<String> meals = new ArrayList<>();
+                for (int j = 0; j < mealsArray.length(); j++) {
+                    meals.add(mealsArray.getString(j));
+                }
+
                 // Check if the ingredient already exists in the list
                 boolean found = false;
                 for (Ingredients item : shoppingItemList) {
                     if (item.getIngredientName().equals(ingredientName)) {
                         // Update the value of the existing ingredient
                         item.setValue(item.getValue() + value);
+                        item.getMeals().addAll(meals); // Add meals to existing ingredient
                         found = true;
                         break;
                     }
@@ -130,6 +139,7 @@ public class ShoppingListFragment extends Fragment {
                     ingredients.setIngredientName(ingredientName);
                     ingredients.setValue(value);
                     ingredients.setUnit(unit);
+                    ingredients.setMeals(meals); // Set meals for the new ingredient
                     shoppingItemList.add(ingredients);
                 }
             }

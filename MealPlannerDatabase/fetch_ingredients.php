@@ -12,9 +12,6 @@ $sql = "SELECT ingredients.ingredient_id, ingredients.ingredient_name, SUM(ingre
         GROUP BY ingredients.ingredient_id, ingredients.unit
         ORDER BY ingredients.ingredient_name ASC";
 
-
-
-
 $result = $conn->query($sql);
 
 $response = array();
@@ -25,14 +22,29 @@ if ($result->num_rows > 0) {
         $value = $row['total_value'];
         $unit = $row['unit'];
 
+        // Fetch the meals associated with the ingredient
+        $ingredientId = $row['ingredient_id'];
+        $mealsSql = "SELECT meal.title
+                     FROM meal
+                     INNER JOIN ingredients ON meal.meal_id = ingredients.meal_ingredient_id
+                     WHERE ingredients.ingredient_id = '$ingredientId'";
 
-        // Add the ingredient to the response array
+        $mealsResult = $conn->query($mealsSql);
+        $meals = array();
+
+        if ($mealsResult->num_rows > 0) {
+            while ($mealRow = $mealsResult->fetch_assoc()) {
+                $meals[] = $mealRow['title'];
+            }
+        }
+
+        // Add the ingredient and its associated meals to the response array
         $response[] = array(
             "ingredientName" => $ingredientName,
             "total_value" => $value,
-            "unit" => $unit
+            "unit" => $unit,
+            "meals" => $meals
         );
-        
     }
 
     // Send JSON response

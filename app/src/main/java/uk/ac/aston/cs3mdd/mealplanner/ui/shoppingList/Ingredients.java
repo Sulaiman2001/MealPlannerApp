@@ -1,10 +1,13 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.shoppingList;
 
+import java.util.List;
+
 public class Ingredients {
 
     private String ingredientName;
     private Integer value;
     private String unit;
+    private List<String> meals;
 
     public String getIngredientName() {
         return ingredientName;
@@ -28,5 +31,13 @@ public class Ingredients {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public List<String> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(List<String> meals) {
+        this.meals = meals;
     }
 }
