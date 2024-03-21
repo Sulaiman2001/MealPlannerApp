@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_meals">
         <action
             android:id="@+id/action_meals_to_mealDetails"
-            app:destination="@id/mealDetails" />
+            app:destination="@id/mealDetails"/>
     </fragment>
 
     <fragment

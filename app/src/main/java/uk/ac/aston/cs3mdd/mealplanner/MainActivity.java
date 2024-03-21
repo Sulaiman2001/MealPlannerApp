@@ -56,7 +56,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // Manually handle the item selection to update the visual state
+        navView.setOnNavigationItemSelectedListener(item -> {
+            item.setChecked(true); // Update the checked state of the item
+            return NavigationUI.onNavDestinationSelected(item, navController); // Navigate to the selected destination
+        });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -70,5 +77,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

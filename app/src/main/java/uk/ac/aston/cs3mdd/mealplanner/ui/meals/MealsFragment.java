@@ -3,6 +3,9 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +46,19 @@ public class MealsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
 
+        // Determine the current destination
+        NavDestination currentDestination = navController.getCurrentDestination();
+
+        // Check if the current destination is the MealsFragment
+        if (currentDestination != null && currentDestination.getId() == R.id.meals) {
+            // Get the BottomNavigationView
+            BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.nav_view);
+
+            // Set the selected tab to the Meals tab
+            bottomNavigationView.setSelectedItemId(R.id.meals);
+        }
     }
 
     @Override
