@@ -115,7 +115,7 @@ public class ShoppingListFragment extends Fragment {
                 String unit = jsonObject.getString("unit");
 
                 // Fetch the meals associated with the ingredient
-                JSONArray mealsArray = jsonObject.getJSONArray("meals"); // Retrieve meals array
+                JSONArray mealsArray = jsonObject.getJSONArray("meals");
                 List<String> meals = new ArrayList<>();
                 for (int j = 0; j < mealsArray.length(); j++) {
                     meals.add(mealsArray.getString(j));
@@ -127,7 +127,7 @@ public class ShoppingListFragment extends Fragment {
                     if (item.getIngredientName().equals(ingredientName)) {
                         // Update the value of the existing ingredient
                         item.setValue(item.getValue() + value);
-                        item.getMeals().addAll(meals); // Add meals to existing ingredient
+                        item.getMeals().addAll(meals);
                         found = true;
                         break;
                     }

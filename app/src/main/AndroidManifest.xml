@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -15,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MealPlanner"
         tools:targetApi="31">
+        <service android:name=".TimerService" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

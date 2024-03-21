@@ -7,6 +7,19 @@
     android:layout_marginBottom="50dp"
     >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:outlineSpotShadowColor="@color/white"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -15,11 +28,6 @@
         android:clipToPadding="false"
         android:scrollbars="vertical"
         android:backgroundTint="@color/white"/>
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
-    </FrameLayout>
+
 </RelativeLayout>
 

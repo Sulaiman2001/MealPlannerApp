@@ -1,13 +1,18 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -28,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -35,16 +42,29 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import android.content.IntentFilter;
+import android.content.Intent;
+
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
+import uk.ac.aston.cs3mdd.mealplanner.TimerService;
 
 public class MealDetailsFragment extends Fragment {
 
     private static final String MealDetailsTest = "MealDetailsFragment";
 
     private String user_id;
-    private Integer mealID;  // Changed data type to Integer
+    private Integer mealID;
+    private TextView countdownTimerText;
+    FloatingActionButton startTimerButton;
+    FloatingActionButton pauseTimerButton;
+    FloatingActionButton endTimerButton;
+    long timeLeftInMillis;
+
+    private CountDownTimer countDownTimer;
+
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -58,6 +78,7 @@ public class MealDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_meal_details, container, false);
+
 
         rootView.setFocusableInTouchMode(true);
         rootView.requestFocus();
@@ -105,6 +126,10 @@ public class MealDetailsFragment extends Fragment {
             Button favouriteButton = rootView.findViewById(R.id.favouriteButton);
             Button addToMealPlan = rootView.findViewById(R.id.addToMealPlan);
             TextView favouriteCountTextView = rootView.findViewById(R.id.favouriteCount);
+            startTimerButton = rootView.findViewById(R.id.startTimerButton);
+            pauseTimerButton = rootView.findViewById(R.id.pauseTimerButton);
+            endTimerButton = rootView.findViewById(R.id.endTimerButton);
+            countdownTimerText = rootView.findViewById(R.id.countdownTimerText);
 
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
@@ -155,9 +180,32 @@ public class MealDetailsFragment extends Fragment {
                 }
             });
             servesTextView.setText("Serves " + serves);
+
+            startTimerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showTimeInputDialog();
+                }
+            });
+
+            pauseTimerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pauseTimer();
+                }
+            });
+
+            endTimerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stopTimer();
+                }
+            });
+
         }
         return rootView;
     }
+
 
     private void markAsFavourite() {
         sendFavouriteRequest(user_id, String.valueOf(mealID));
@@ -315,4 +363,122 @@ public class MealDetailsFragment extends Fragment {
 
         return data;
     }
+
+    private void showTimeInputDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Enter time");
+
+        View view = getLayoutInflater().inflate(R.layout.time_input_dialog, null);
+        builder.setView(view);
+
+        final EditText hoursInput = view.findViewById(R.id.hours_input);
+        final EditText minutesInput = view.findViewById(R.id.minutes_input);
+        final EditText secondsInput = view.findViewById(R.id.seconds_input);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int hours = parseInput(hoursInput.getText().toString());
+                int minutes = parseInput(minutesInput.getText().toString());
+                int seconds = parseInput(secondsInput.getText().toString());
+
+                startTimer(hours, minutes, seconds);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+    // Inside startTimer() method
+    private void startTimer(int hours, int minutes, int seconds) {
+        stopTimer(); // Stop any previously running timer
+
+        // Calculate total time in milliseconds
+        long totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000;
+
+        // Initialize a new CountDownTimer
+        countDownTimer = new CountDownTimer(totalMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Intent serviceIntent = new Intent(requireContext(), TimerService.class);
+                serviceIntent.putExtra("millisInFuture", millisUntilFinished);
+                requireContext().startService(serviceIntent);
+
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(requireContext(), "Timer Ended", Toast.LENGTH_SHORT).show();
+
+            }
+        }.start();
+    }
+
+
+
+
+    private void updateCountDownText(long timeLeftInMillis) {
+        int hours = (int) (timeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((timeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (timeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+        countdownTimerText.setText(timeLeftFormatted);
+    }
+
+    private BroadcastReceiver timerTickReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            long timeLeftInMillis = intent.getLongExtra("timeLeftInMillis", 0);
+            updateCountDownText(timeLeftInMillis); // Update countdown text
+        }
+    };
+
+    private void pauseTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Pause the timer
+        }
+    }
+
+    private void stopTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stop the timer
+            countdownTimerText.setText("00:00:00");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().registerReceiver(timerTickReceiver, new IntentFilter(TimerService.TIMER_UPDATE_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireActivity().unregisterReceiver(timerTickReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    private int parseInput(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            // If parsing fails (e.g., empty input), return 0 or handle the error as needed
+            return 0;
+        }
+    }
+
+
 }

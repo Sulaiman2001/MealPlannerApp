@@ -1,5 +1,3 @@
-<!-- fragment_meal_details.xml -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +9,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:scaleType="centerCrop"
         android:src="@drawable/blue_cards"
         />
@@ -19,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -32,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp"
                 android:textColor="@color/black"
                 android:text="Hello"/>
 
@@ -204,9 +201,8 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
+                android:layout_height="210dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/text_box_container"
                 >
                 <TextView
@@ -218,10 +214,59 @@
                     android:textSize="17dp"/>
             </ScrollView>
 
+        <TextView
+            android:id="@+id/countdownTimerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
+            android:text="Press the start button to set a timer"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/startTimerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@android:drawable/ic_media_play"
+                android:outlineSpotShadowColor="@color/white"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/pauseTimerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@android:drawable/ic_media_pause"
+                android:layout_marginHorizontal="15dp"
+                android:outlineSpotShadowColor="@color/white"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/endTimerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:outlineSpotShadowColor="@color/white"
+                android:src="@android:drawable/alert_light_frame" />
+
+        </LinearLayout>
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/addToMealPlan"
