@@ -18,6 +18,12 @@
             app:destination="@id/meals" />
     </fragment>
 
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/log_in"
+        app:popUpTo="@id/log_in"
+        app:popUpToInclusive="true"/>
+
     <fragment
         android:id="@+id/register"
         android:name="uk.ac.aston.cs3mdd.mealplanner.ui.register.RegisterFragment"
@@ -39,6 +45,9 @@
         <action
             android:id="@+id/action_meals_to_mealDetails"
             app:destination="@id/mealDetails"/>
+        <action
+            android:id="@+id/action_meals_to_log_in"
+            app:destination="@id/log_in" />
     </fragment>
 
     <fragment

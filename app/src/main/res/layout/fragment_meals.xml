@@ -85,7 +85,9 @@
                 android:layout_marginRight="5dp"
                 />
         </LinearLayout>
+
     </HorizontalScrollView>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -96,5 +98,7 @@
             android:scrollbars="vertical"
             android:paddingHorizontal="20dp"
             android:layout_marginBottom="50dp"/>
+
 </LinearLayout>
+
 

@@ -1,5 +1,7 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -200,7 +202,6 @@ public class MealsFragment extends Fragment {
             }
         });
 
-
         // fetch all meals
         fetchMealData();
 
@@ -381,6 +382,5 @@ public class MealsFragment extends Fragment {
 
         Toast.makeText(getActivity(), "Error fetching meal data: " + error.getMessage(), Toast.LENGTH_SHORT). show();
     }
-
 
 }
