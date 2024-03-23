@@ -4,10 +4,20 @@ import java.util.List;
 
 public class Ingredients {
 
+    private Integer ingredientID; // Modified to use "ingredientID"
     private String ingredientName;
     private Integer value;
     private String unit;
     private List<String> meals;
+    private boolean selected;
+
+    public Integer getIngredientID() {
+        return ingredientID;
+    }
+
+    public void setIngredientID(Integer ingredientID) {
+        this.ingredientID = ingredientID; // Ensure proper setting of ingredientID
+    }
 
     public String getIngredientName() {
         return ingredientName;
@@ -39,5 +49,13 @@ public class Ingredients {
 
     public void setMeals(List<String> meals) {
         this.meals = meals;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

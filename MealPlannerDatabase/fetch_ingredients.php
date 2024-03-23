@@ -40,6 +40,7 @@ if ($result->num_rows > 0) {
 
         // Add the ingredient and its associated meals to the response array
         $response[] = array(
+            "ingredientId" => $ingredientId,
             "ingredientName" => $ingredientName,
             "total_value" => $value,
             "unit" => $unit,

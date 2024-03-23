@@ -1,12 +1,12 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.shoppingList;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,8 +21,15 @@ import uk.ac.aston.cs3mdd.mealplanner.R;
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ViewHolder> {
     private List<Ingredients> shoppingItemList;
     private Context context;
+    private OnCheckboxClickListener listener;
 
-    // Constructor and methods
+    public interface OnCheckboxClickListener {
+        void onCheckboxClick(int position, boolean isChecked);
+    }
+
+    public void setOnCheckboxClickListener(OnCheckboxClickListener listener) {
+        this.listener = listener;
+    }
 
     public ShoppingListAdapter(List<Ingredients> shoppingItemList, Context context) {
         this.shoppingItemList = shoppingItemList;
@@ -52,16 +59,32 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Ingredients item = shoppingItemList.get(position);
         holder.ingredientNameTextView.setText(item.getIngredientName());
-        String valueWithSpace = item.getValue() + " " + item.getUnit(); // Concatenate value and unit with a space
+        String valueWithSpace = item.getValue() + " " + item.getUnit();
         holder.valueTextView.setText(valueWithSpace);
 
+        // Use the actual ingredient ID from the Ingredients object
+        Integer ingredientID = item.getIngredientID();
+
+        holder.checkBox.setOnCheckedChangeListener(null); // Reset listener to avoid recycled view issues
+        holder.checkBox.setChecked(item.isSelected());
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (listener != null) {
+                    listener.onCheckboxClick(position, isChecked);
+                }
+            }
+        });
+
+        // Set click listener for details button
         holder.detailsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showIngredientDetailsDialog(item); // Pass ingredient object to dialog
+                // Implement logic to show ingredient details dialog
+                // You can call a method in the fragment to handle this
             }
         });
     }
@@ -69,32 +92,5 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public int getItemCount() {
         return shoppingItemList.size();
-    }
-
-    private void showIngredientDetailsDialog(Ingredients ingredient) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Ingredient Details");
-
-        // Create a string with the list of meal titles
-        StringBuilder mealsStringBuilder = new StringBuilder();
-        for (String meal : ingredient.getMeals()) {
-            mealsStringBuilder.append("- ").append(meal).append("\n");
-        }
-        String mealsString = mealsStringBuilder.toString().trim();
-
-        // Set message with ingredient details and associated meal titles
-        String message = "Ingredient Name: " + ingredient.getIngredientName() + "\n"
-                + "Total Value: " + ingredient.getValue() + " " + ingredient.getUnit() + "\n\n"
-                + "Meals:\n" + mealsString;
-        builder.setMessage(message);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
