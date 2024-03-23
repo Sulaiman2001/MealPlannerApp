@@ -397,31 +397,33 @@ public class MealDetailsFragment extends Fragment {
         builder.show();
     }
 
-    // Inside startTimer() method
     private void startTimer(int hours, int minutes, int seconds) {
-        stopTimer(); // Stop any previously running timer
-
         // Calculate total time in milliseconds
         long totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000;
+
+        // Reset the timer
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null; // Reset the instance
+        }
 
         // Initialize a new CountDownTimer
         countDownTimer = new CountDownTimer(totalMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Intent serviceIntent = new Intent(requireContext(), TimerService.class);
-                serviceIntent.putExtra("millisInFuture", millisUntilFinished);
-                requireContext().startService(serviceIntent);
-
+                // Timer is still running, update text
+                updateCountDownText(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
                 Toast.makeText(requireContext(), "Timer Ended", Toast.LENGTH_SHORT).show();
-
+                // Stop the CountDownTimer after it finishes
+                stopTimer();
+                sendNotification(timeLeftInMillis);
             }
         }.start();
     }
-
 
 
 
@@ -451,7 +453,7 @@ public class MealDetailsFragment extends Fragment {
     private void stopTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel(); // Stop the timer
-            countdownTimerText.setText("00:00:00");
+            updateCountDownText(0); // Update countdown text to display "00:00:00"
         }
     }
 
@@ -481,5 +483,11 @@ public class MealDetailsFragment extends Fragment {
         }
     }
 
+    private void sendNotification(long millisUntilFinished) {
+        // Send notification using TimerService
+        Intent serviceIntent = new Intent(requireContext(), TimerService.class);
+        serviceIntent.putExtra("millisInFuture", millisUntilFinished);
+        requireContext().startService(serviceIntent);
+    }
 
 }

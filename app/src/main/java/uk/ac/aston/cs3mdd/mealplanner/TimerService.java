@@ -20,6 +20,8 @@ public class TimerService extends Service {
     public static final String TIMER_UPDATE_ACTION = "uk.ac.aston.cs3mdd.mealplanner.TIMER_TICK";
     private static final int NOTIFICATION_ID = 1;
     private static final String NOTIFICATION_CHANNEL_ID = "timer_channel";
+    private NotificationManager notificationManager;
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -29,9 +31,10 @@ public class TimerService extends Service {
             // Start the service as a foreground service
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 createNotificationChannel();
-                Notification notification = buildNotification();
-                startForeground(NOTIFICATION_ID, notification);
             }
+
+            // Cancel any previous notification
+            cancelNotification();
 
             // Start the countdown timer
             countDownTimer = new CountDownTimer(totalMillis, 1000) {
@@ -79,7 +82,7 @@ public class TimerService extends Service {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -111,11 +114,15 @@ public class TimerService extends Service {
                 .setAutoCancel(true);
 
         // Get the notification manager
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Display the notification
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
+    private void cancelNotification() {
+        if (notificationManager != null) {
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
+    }
 }
-
