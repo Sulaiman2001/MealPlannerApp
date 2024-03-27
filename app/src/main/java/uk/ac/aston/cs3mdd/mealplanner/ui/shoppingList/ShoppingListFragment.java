@@ -1,18 +1,20 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.shoppingList;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,6 +41,7 @@ public class ShoppingListFragment extends Fragment {
     private RecyclerView recyclerView;
     private ShoppingListAdapter adapter;
     private List<Ingredients> shoppingItemList;
+    private SharedPreferences sharedPreferences; // Add this line
 
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -64,11 +67,13 @@ public class ShoppingListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
+        sharedPreferences = requireActivity().getSharedPreferences("checkbox_state", Context.MODE_PRIVATE);
+
         adapter.setOnCheckboxClickListener(new ShoppingListAdapter.OnCheckboxClickListener() {
             @Override
             public void onCheckboxClick(int position, boolean isChecked) {
                 Ingredients item = shoppingItemList.get(position);
-                item.setSelected(isChecked);
+                item.setChecked(isChecked); // Update the isChecked field in the data model
             }
         });
 
@@ -77,6 +82,14 @@ public class ShoppingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 deleteSelectedItems();
+            }
+        });
+
+        FloatingActionButton addIngredientButton = rootView.findViewById(R.id.addIngredient);
+        addIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddIngredientDialog();
             }
         });
 
@@ -121,15 +134,19 @@ public class ShoppingListFragment extends Fragment {
             shoppingItemList.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Integer ingredientID = jsonObject.getInt("ingredientId"); // Add this line to fetch ingredient ID
+                Integer ingredientID = null; // Initialize to null
+                if (!jsonObject.isNull("ingredientId")) { // Check if the value is not null
+                    ingredientID = jsonObject.getInt("ingredientId"); // Convert to integer only if not null
+                }
                 String ingredientName = jsonObject.getString("ingredientName");
-                Integer value = jsonObject.getInt("total_value");
+                String value = jsonObject.getString("total_value");
                 String unit = jsonObject.getString("unit");
                 JSONArray mealsArray = jsonObject.getJSONArray("meals");
                 List<String> meals = new ArrayList<>();
                 for (int j = 0; j < mealsArray.length(); j++) {
                     meals.add(mealsArray.getString(j));
                 }
+                boolean isCustom = jsonObject.getBoolean("isCustom");
 
                 // Log ingredient details including ID
                 Log.d("IngredientDetails", "Ingredient ID: " + ingredientID);
@@ -137,6 +154,7 @@ public class ShoppingListFragment extends Fragment {
                 Log.d("IngredientDetails", "Value: " + value);
                 Log.d("IngredientDetails", "Unit: " + unit);
                 Log.d("IngredientDetails", "Meals: " + meals);
+                Log.d("IngredientDetails", "isCustom: " + isCustom);
 
                 boolean found = false;
                 for (Ingredients item : shoppingItemList) {
@@ -154,6 +172,7 @@ public class ShoppingListFragment extends Fragment {
                     ingredients.setValue(value);
                     ingredients.setUnit(unit);
                     ingredients.setMeals(meals);
+                    ingredients.setCustom(isCustom);
                     shoppingItemList.add(ingredients);
                 }
             }
@@ -164,6 +183,7 @@ public class ShoppingListFragment extends Fragment {
     }
 
 
+
     private void deleteSelectedItems() {
         Iterator<Ingredients> iterator = shoppingItemList.iterator();
         while (iterator.hasNext()) {
@@ -171,13 +191,13 @@ public class ShoppingListFragment extends Fragment {
             if (item.isSelected()) {
                 iterator.remove();
                 adapter.notifyDataSetChanged(); // Notify adapter after removing item
-                deleteItemFromDatabase(item.getIngredientID()); // Use the actual ingredient ID
+                deleteItemFromDatabase(item.getIngredientID(), item.isCustom()); // Pass isCustom parameter
             }
         }
     }
 
 
-    private void deleteItemFromDatabase(Integer ingredientID) {
+    private void deleteItemFromDatabase(Integer ingredientID, boolean isCustom) { // Modify method signature
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_shopping_list_items.php";
         RequestQueue queue = Volley.newRequestQueue(requireContext());
 
@@ -216,6 +236,7 @@ public class ShoppingListFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", getUserIDFromSharedPreferences());
                 params.put("ingredient_id", String.valueOf(ingredientID));
+                params.put("is_custom", String.valueOf(isCustom)); // Pass isCustom parameter
                 return params;
             }
         };
@@ -223,6 +244,100 @@ public class ShoppingListFragment extends Fragment {
         queue.add(stringRequest);
     }
 
+
+
+    private void addCustomIngredient(String ingredientName, String amount) {
+        // Get user ID from SharedPreferences
+        String userID = getUserIDFromSharedPreferences();
+        Log.d("AddIngredient", "Ingredient Name: " + ingredientName);
+
+        // Request URL
+        String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/add_custom_ingredient.php";
+
+        // Volley RequestQueue
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+
+        // POST parameters
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", userID);
+        params.put("ingredient_name", ingredientName);
+        params.put("amount", amount);
+
+        // Create a new StringRequest
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle response from the server
+                        Log.d("AddIngredientResponse", "Response: " + response);
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            String status = jsonResponse.getString("status");
+                            String message = jsonResponse.getString("message");
+
+                            if (status.equals("success")) {
+                                // Ingredient added successfully
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                                // Refresh shopping list data after adding the ingredient
+                                fetchShoppingListData();
+                            } else {
+                                // Error adding ingredient
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(requireContext(), "Error parsing response", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error response
+                        Toast.makeText(requireContext(), "Error adding ingredient: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+
+        // Add the request to the RequestQueue
+        queue.add(stringRequest);
+    }
+
+
+    private void showAddIngredientDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.add_ingredient_dialog, null);
+
+        final EditText editTextIngredientName = view.findViewById(R.id.editTextIngredientName);
+        final EditText editTextAmount = view.findViewById(R.id.editTextAmount);
+
+        builder.setView(view)
+                .setTitle("Add Ingredient")
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String ingredientName = editTextIngredientName.getText().toString();
+                        String amount = editTextAmount.getText().toString();
+                        // Handle the addition of the ingredient here
+                        // For example, you can add it to your shopping list data or send it to the server
+                        Toast.makeText(requireContext(), "Added ingredient to the shopping list" + ingredientName + amount, Toast.LENGTH_SHORT).show();
+                        addCustomIngredient(ingredientName, amount);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     private String getUserIDFromSharedPreferences() {
         SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);

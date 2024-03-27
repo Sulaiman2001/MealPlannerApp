@@ -4,12 +4,16 @@ import java.util.List;
 
 public class Ingredients {
 
-    private Integer ingredientID; // Modified to use "ingredientID"
+    private Integer ingredientID;
+    private Integer customIngredientID;
     private String ingredientName;
-    private Integer value;
+    private String value;
     private String unit;
     private List<String> meals;
     private boolean selected;
+    private boolean isCustom;
+    private boolean isChecked;
+
 
     public Integer getIngredientID() {
         return ingredientID;
@@ -27,11 +31,11 @@ public class Ingredients {
         this.ingredientName = ingredientName;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -57,5 +61,21 @@ public class Ingredients {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isCustom() {
+        return isCustom;
+    }
+
+    public void setCustom(boolean custom) {
+        isCustom = custom;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

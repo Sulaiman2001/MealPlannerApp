@@ -33,7 +33,7 @@
         android:clickable="true"
         android:outlineSpotShadowColor="@color/white"
         android:src="@android:drawable/ic_menu_delete"
-        android:tint="@color/white"/>
+        android:tint="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
