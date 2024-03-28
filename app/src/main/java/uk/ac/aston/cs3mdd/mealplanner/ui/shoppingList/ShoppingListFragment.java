@@ -182,20 +182,19 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
-
-
     private void deleteSelectedItems() {
         Iterator<Ingredients> iterator = shoppingItemList.iterator();
         while (iterator.hasNext()) {
             Ingredients item = iterator.next();
-            if (item.isSelected()) {
+            if (item.isChecked()) {
                 iterator.remove();
-                adapter.notifyDataSetChanged(); // Notify adapter after removing item
                 deleteItemFromDatabase(item.getIngredientID(), item.isCustom()); // Pass isCustom parameter
             }
         }
+        // After deletion, save the updated checkbox states
+        saveCheckboxStates();
+        adapter.notifyDataSetChanged();
     }
-
 
     private void deleteItemFromDatabase(Integer ingredientID, boolean isCustom) { // Modify method signature
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_shopping_list_items.php";
@@ -337,6 +336,29 @@ public class ShoppingListFragment extends Fragment {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Restore checkbox states when the fragment is resumed
+        restoreCheckboxStates();
+    }
+
+    private void restoreCheckboxStates() {
+        for (int i = 0; i < shoppingItemList.size(); i++) {
+            boolean isChecked = sharedPreferences.getBoolean("checkbox_" + i, false);
+            shoppingItemList.get(i).setChecked(isChecked);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void saveCheckboxStates() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (int i = 0; i < shoppingItemList.size(); i++) {
+            editor.putBoolean("checkbox_" + i, shoppingItemList.get(i).isChecked());
+        }
+        editor.apply();
     }
 
     private String getUserIDFromSharedPreferences() {
