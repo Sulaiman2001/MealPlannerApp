@@ -7,8 +7,10 @@ $meal_id = $_POST['meal_id'];
 $date = $_POST['date'];
 
 $sql_meal_plan = "INSERT INTO meal_plan (user_id, meal_id, date) VALUES ('$user_id', '$meal_id', '$date')";
-
 if ($conn->query($sql_meal_plan) === TRUE) {
+    // Retrieve the last inserted meal_plan_id
+    $meal_plan_id = $conn->insert_id;
+
     // Meal plan insertion successful, now insert ingredients into shopping_list table
     // Retrieve ingredients for the chosen meal
     $sql_get_ingredients = "SELECT * FROM ingredients WHERE meal_ingredient_id = '$meal_id'";
@@ -23,8 +25,8 @@ if ($conn->query($sql_meal_plan) === TRUE) {
                 $ingredient_id = $row['ingredient_id'];
                 $quantity = $row['value']; // Adjust as needed
 
-                // Insert into shopping_list with the correct meal ID and set is_custom to 0
-                $sql_shopping_list = "INSERT INTO shopping_list (user_id, ingredient_id, shopping_list_meal_id) VALUES ('$user_id', '$ingredient_id', '$meal_id')";
+                // Insert into shopping_list with the correct meal plan ID and set is_custom to 0
+                $sql_shopping_list = "INSERT INTO shopping_list (user_id, ingredient_id, shopping_list_meal_id) VALUES ('$user_id', '$ingredient_id', '$meal_plan_id')";
                 $conn->query($sql_shopping_list);
             }
 
@@ -33,6 +35,7 @@ if ($conn->query($sql_meal_plan) === TRUE) {
 
             $response['status'] = 'success';
             $response['message'] = 'Meal and ingredients added to the plan and shopping list successfully';
+            $response['meal_plan_id'] = $meal_plan_id; // Include meal_plan_id in the response
         } catch (Exception $e) {
             // Rollback the transaction in case of any error
             $conn->rollback();

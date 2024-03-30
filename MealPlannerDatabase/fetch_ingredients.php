@@ -1,10 +1,54 @@
 <?php
-
 include "conn.php";
 
 $user_id = $_POST['user_id'];
 
 $response = array(); // Initialize the response array
+
+$ingredients_to_delete = array();
+
+// Fetch meal plan data with scheduled dates
+$sql_meal_plan = "SELECT meal_plan.meal_plan_id, meal_plan.date, meal_plan.meal_id
+                  FROM meal_plan
+                  WHERE meal_plan.user_id = '$user_id'";
+
+$result_meal_plan = $conn->query($sql_meal_plan);
+
+// Fetch current date
+$current_date = date("Y-m-d"); // Get the current date
+
+// Iterate over meal plans
+if ($result_meal_plan->num_rows > 0) {
+    while ($row = $result_meal_plan->fetch_assoc()) {
+        $meal_plan_id = $row['meal_plan_id'];
+        $meal_id = $row['meal_id'];
+        $scheduled_date = $row['date'];
+
+        // Check if the scheduled date is before the current date
+        if ($scheduled_date < $current_date) {
+            // For past meals, fetch shopping list items associated with this meal plan
+            $sql_shopping_list_items = "SELECT shopping_list.shopping_list_id FROM shopping_list 
+                                        INNER JOIN meal_plan ON shopping_list.shopping_list_meal_id = meal_plan.meal_plan_id
+                                        WHERE meal_plan.meal_plan_id = '$meal_plan_id'";
+            $result_shopping_list_items = $conn->query($sql_shopping_list_items);
+
+            if ($result_shopping_list_items->num_rows > 0) {
+                // Add shopping list IDs to the delete array
+                while ($shopping_list_item_row = $result_shopping_list_items->fetch_assoc()) {
+                    $ingredients_to_delete[] = $shopping_list_item_row['shopping_list_id'];
+                }
+            }
+        }
+    }
+}
+
+// Delete shopping list items associated with ingredients from past meals
+if (!empty($ingredients_to_delete)) {
+    $shopping_list_ids_str = implode(",", $ingredients_to_delete);
+    $sql_delete = "DELETE FROM shopping_list 
+                   WHERE shopping_list.shopping_list_id IN ($shopping_list_ids_str)";
+    $conn->query($sql_delete);
+}
 
 // Fetch standard ingredients
 $sql_standard = "SELECT ingredients.ingredient_id, ingredients.ingredient_name, SUM(ingredients.value) AS total_value, ingredients.unit
@@ -27,13 +71,12 @@ $allIngredients = array();
 
 if ($result_standard->num_rows > 0) {
     while ($row = $result_standard->fetch_assoc()) {
-        $ingredientId = $row['ingredient_id']; // This line should be inside the loop
+        $ingredientId = $row['ingredient_id'];
         $ingredientName = $row['ingredient_name'];
         $value = $row['total_value'];
         $unit = $row['unit'];
 
         // Fetch the meals associated with the ingredient
-        $ingredientId = $row['ingredient_id'];
         $mealsSql = "SELECT meal.title
                      FROM meal
                      INNER JOIN ingredients ON meal.meal_id = ingredients.meal_ingredient_id
@@ -78,7 +121,6 @@ if ($result_custom->num_rows > 0) {
     }
 }
 
-
 // Sort the combined array alphabetically by ingredient name
 usort($allIngredients, function($a, $b) {
     return strcmp($a['ingredientName'], $b['ingredientName']);
@@ -89,5 +131,4 @@ header('Content-Type: application/json');
 echo json_encode($allIngredients);
 
 $conn->close();
-
 ?>
