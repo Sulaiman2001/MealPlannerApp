@@ -7,7 +7,7 @@ $filterByVegetarian = isset($_GET['vegetarian']) ? $_GET['vegetarian'] : null;
 $filterByCookingTime = isset($_GET['cooking_time']) ? $_GET['cooking_time'] : null;
 $filterByMealType = isset($_GET['meal_type']) ? $_GET['meal_type'] : null;
 
-$sql = "SELECT meal_id, title, meal_type, imagePath, vegan, vegetarian, time_to_cook, recipe, ingredients, serves, favourite_count FROM meal";
+$sql = "SELECT meal_id, title, meal_type, imagePath, vegan, vegetarian, time_to_cook, recipe, ingredients, serves, favourite_count, calories FROM meal";
 
 // If the filterByVegan parameter is provided and is set to 1, filter vegan meals
 if ($filterByVegan == 1) {
@@ -47,6 +47,8 @@ if ($result->num_rows > 0) {
 
         $vegetarian = $row['vegetarian'];
 
+        $calories = $row['calories'];
+
         $time_to_cook = $row['time_to_cook'];
 
         $ingredients = $row['ingredients'];
@@ -57,7 +59,7 @@ if ($result->num_rows > 0) {
 
         $favourite_count = $row['favourite_count'];
 
-        $mealsArray[] = array('meal_id' => $meal_id, 'title' => $title, 'meal_type' => $mealType, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian, 'time_to_cook' => $time_to_cook, 'recipe' => $recipe, 'ingredients' => $ingredients, 'serves' => $serves, 'favourite_count' => $favourite_count);
+        $mealsArray[] = array('meal_id' => $meal_id, 'title' => $title, 'meal_type' => $mealType, 'imagePath' => $imagePath, 'vegan' => $vegan, 'vegetarian' => $vegetarian, 'calories' => $calories, 'time_to_cook' => $time_to_cook, 'recipe' => $recipe, 'ingredients' => $ingredients, 'serves' => $serves, 'favourite_count' => $favourite_count);
     }
 
     echo json_encode($mealsArray);

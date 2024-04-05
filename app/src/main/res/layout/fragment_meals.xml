@@ -89,16 +89,14 @@
     </HorizontalScrollView>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:paddingHorizontal="20dp"
-            android:layout_marginBottom="50dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginBottom="50dp"/>
 
 </LinearLayout>
-
-

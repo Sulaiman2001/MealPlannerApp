@@ -6,12 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,6 +24,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,7 +34,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -45,9 +44,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import android.content.IntentFilter;
-import android.content.Intent;
-
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
 import uk.ac.aston.cs3mdd.mealplanner.TimerService;
@@ -113,6 +109,8 @@ public class MealDetailsFragment extends Fragment {
             String ingredients = bundle.getString("ingredients");
             Integer serves = bundle.getInt("serves");
             Integer favouriteCount = bundle.getInt("favourite_count");
+            Integer calories = bundle.getInt("calories");
+
 
             TextView titleTextView = rootView.findViewById(R.id.titleTextView);
             TextView mealTypeTextView = rootView.findViewById(R.id.mealTypeTextView);
@@ -127,6 +125,7 @@ public class MealDetailsFragment extends Fragment {
             Button favouriteButton = rootView.findViewById(R.id.favouriteButton);
             Button addToMealPlan = rootView.findViewById(R.id.addToMealPlan);
             TextView favouriteCountTextView = rootView.findViewById(R.id.favouriteCount);
+            TextView caloriesTextView = rootView.findViewById(R.id.caloriesTextView);
             startTimerButton = rootView.findViewById(R.id.startTimerButton);
             pauseTimerButton = rootView.findViewById(R.id.pauseTimerButton);
             endTimerButton = rootView.findViewById(R.id.endTimerButton);
@@ -181,6 +180,8 @@ public class MealDetailsFragment extends Fragment {
                 }
             });
             servesTextView.setText("Serves " + serves);
+
+            caloriesTextView.setText(calories + " kcal");
 
             startTimerButton.setOnClickListener(new View.OnClickListener() {
                 @Override

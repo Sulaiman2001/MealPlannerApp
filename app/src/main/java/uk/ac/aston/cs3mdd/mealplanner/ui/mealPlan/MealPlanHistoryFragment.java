@@ -3,16 +3,15 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.mealPlan;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -131,8 +130,9 @@ public class MealPlanHistoryFragment extends Fragment {
                     String ingredients = mealJson.getString("ingredients");
                     Integer serves = mealJson.getInt("serves");
                     Integer favouriteCount = mealJson.getInt("favourite_count");
+                    Integer calories = mealJson.getInt("calories");
 
-                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount);
+                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount,calories);
 
                     mealPlans.add(mealPlan);
                 }

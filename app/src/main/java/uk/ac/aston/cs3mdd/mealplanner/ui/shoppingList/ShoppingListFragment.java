@@ -131,7 +131,6 @@ public class ShoppingListFragment extends Fragment {
     private void updateShoppingList(String response) {
         try {
             JSONArray jsonArray = new JSONArray(response);
-            shoppingItemList.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Integer ingredientID = null; // Initialize to null
@@ -156,16 +155,20 @@ public class ShoppingListFragment extends Fragment {
                 Log.d("IngredientDetails", "Meals: " + meals);
                 Log.d("IngredientDetails", "isCustom: " + isCustom);
 
+                // Check if the ingredient already exists in the shopping list
                 boolean found = false;
                 for (Ingredients item : shoppingItemList) {
                     if (item.getIngredientName().equals(ingredientName)) {
-                        item.setValue(item.getValue() + value);
+                        // Convert value to numerical type (assuming it's a string)
+                        double newValue = Double.parseDouble(item.getValue()) + Double.parseDouble(value);
+                        item.setValue(String.valueOf(newValue));
                         item.getMeals().addAll(meals);
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
+                    // If the ingredient doesn't exist in the shopping list, add it
                     Ingredients ingredients = new Ingredients();
                     ingredients.setIngredientID(ingredientID); // Set ingredient ID
                     ingredients.setIngredientName(ingredientName);
@@ -181,6 +184,7 @@ public class ShoppingListFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
     private void deleteSelectedItems() {
         Iterator<Ingredients> iterator = shoppingItemList.iterator();

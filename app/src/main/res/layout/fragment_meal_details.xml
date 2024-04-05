@@ -139,6 +139,21 @@
             android:layout_height="wrap_content"
             >
             <TextView
+                android:id="@+id/caloriesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_cards"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="kcal"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/vegetarianTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,7 +166,9 @@
                 android:text="Vegetarian"
                 android:textColor="@color/white"
                 android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                />
 
             <TextView
                 android:id="@+id/veganTextView"
@@ -168,6 +185,7 @@
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <RadioGroup
@@ -224,7 +242,7 @@
             android:layout_margin="10dp"
             android:text="Press the start button to set a timer"
             android:textAlignment="center"
-            android:textSize="24sp"
+            android:textSize="16dp"
             android:textColor="@color/black"/>
 
         <LinearLayout

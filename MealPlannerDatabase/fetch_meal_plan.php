@@ -17,10 +17,10 @@ if ($user_id === null) {
     exit;
 }
 
-$sql = "SELECT mp.date, m.meal_id, m.title, m.meal_type, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count 
+$sql = "SELECT mp.date, m.meal_id, m.title, m.meal_type, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count, m.calories 
         FROM meal_plan mp
         JOIN meal m ON mp.meal_id = m.meal_id
-        WHERE mp.user_id = ?
+        WHERE mp.user_id = ? AND mp.date >= CURDATE() - INTERVAL 30 DAY
         ORDER BY mp.date ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -50,6 +50,7 @@ while ($row = $result->fetch_assoc()) {
     $serves = $row['serves'];
     $date = $row['date'];
     $favourite_count = $row['favourite_count'];
+    $calories = $row['calories'];
 
     // Create a MealPlan object
     $mealPlan = array(
@@ -64,7 +65,8 @@ while ($row = $result->fetch_assoc()) {
         'ingredients' => $ingredients,
         'serves' => $serves,
         'date' => $date,
-        'favourite_count' => $favourite_count
+        'favourite_count' => $favourite_count,
+        'calories' => $calories
     );
 
     // Add the MealPlan object to the mealsArray

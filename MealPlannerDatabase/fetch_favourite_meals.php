@@ -20,7 +20,7 @@ if ($user_id === null) {
     exit;
 }
 
-$sql = "SELECT m.meal_id, m.title, m.meal_type, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count 
+$sql = "SELECT m.meal_id, m.title, m.meal_type, m.imagePath, m.vegan, m.vegetarian, m.time_to_cook, m.recipe, m.ingredients, m.serves, m.favourite_count, m.calories 
         FROM meal m
         JOIN favourites f ON m.meal_id = f.meal_favourite_id
         WHERE f.user_favourite_id = ?";
@@ -51,6 +51,8 @@ while ($row = $result->fetch_assoc()) {
     $recipe = $row['recipe'];
     $serves = $row['serves'];
     $favourite_count = $row['favourite_count'];
+    $calories = $row['calories'];
+
 
     $mealsArray[] = array(
         'meal_id' => $meal_id,
@@ -63,7 +65,9 @@ while ($row = $result->fetch_assoc()) {
         'recipe' => $recipe,
         'ingredients' => $ingredients,
         'serves' => $serves,
-        'favourite_count' => $favourite_count
+        'favourite_count' => $favourite_count,
+        'calories' => $calories
+
     );
 }
 

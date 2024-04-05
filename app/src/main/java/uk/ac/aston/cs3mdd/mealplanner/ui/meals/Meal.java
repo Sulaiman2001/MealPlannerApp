@@ -12,10 +12,11 @@ public class Meal {
     private String ingredients;
     private Integer serves;
     private Integer favouriteCount;
+    private Integer calories;
 
 
 
-    public Meal(Integer mealID, String title,String mealType, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves, Integer favouriteCount) {
+    public Meal(Integer mealID, String title,String mealType, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves, Integer favouriteCount, Integer calories) {
         this.mealID = mealID;
         this.title = title;
         this.mealType = mealType;
@@ -27,6 +28,7 @@ public class Meal {
         this.ingredients = ingredients;
         this.serves = serves;
         this.favouriteCount = favouriteCount;
+        this.calories = calories;
     }
 
     public Integer getMealID() {
@@ -57,5 +59,7 @@ public class Meal {
     public Integer getServes() { return serves; }
     public Integer getFavouriteCount(){ return favouriteCount;}
 
-
+    public Integer getCalories() {
+        return calories;
+    }
 }

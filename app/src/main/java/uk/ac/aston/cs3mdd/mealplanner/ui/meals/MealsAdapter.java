@@ -1,7 +1,6 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -95,6 +92,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         TextView ingredients;
         TextView serves;
         TextView favouriteCount;
+        TextView calories;
 
         public MealViewHolder(View itemView) {
             super(itemView);
@@ -110,7 +108,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
-
+            calories = itemView.findViewById(R.id.caloriesTextView);
         }
     }
 
@@ -127,6 +125,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
         bundle.putInt("favourite_count", meal.getFavouriteCount());
+        bundle.putInt("calories", meal.getCalories());
 
         Navigation.findNavController(view).navigate(R.id.action_meals_to_mealDetails, bundle);
 

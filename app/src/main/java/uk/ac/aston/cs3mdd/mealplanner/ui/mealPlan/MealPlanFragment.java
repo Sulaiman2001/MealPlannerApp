@@ -19,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -143,8 +142,10 @@ public class MealPlanFragment extends Fragment {
                     String ingredients = mealJson.getString("ingredients");
                     Integer serves = mealJson.getInt("serves");
                     Integer favouriteCount = mealJson.getInt("favourite_count");
+                    Integer calories = mealJson.getInt("calories");
 
-                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount);
+
+                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount, calories);
 
                     mealPlans.add(mealPlan);
                 }
