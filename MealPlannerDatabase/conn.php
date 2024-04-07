@@ -1,5 +1,4 @@
 <?php
-//conn.php
 $server = "localhost";
 $username = "root";
 $password = "";

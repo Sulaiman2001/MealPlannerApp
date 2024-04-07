@@ -3,10 +3,6 @@ package uk.ac.aston.cs3mdd.mealplanner.ui.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -160,7 +159,6 @@ public class LogInFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("username", editUsername.getText().toString());
         data.put("password", editPassword.getText().toString());
-
         return data;
     }
 

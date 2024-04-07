@@ -1,5 +1,7 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.register;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +37,7 @@ public class RegisterFragment extends Fragment {
     private EditText registerEmail, registerUsername, registerPassword, confirmPassword;
     private Button registerButton, returnToLoginButton;
 
-    private TextView  emailExistsMsg, emailFormatMsg, passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg, emptyInputFieldsMsg;
+    private TextView  usernameExistsMsg, emailExistsMsg, emailFormatMsg, passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg, emptyInputFieldsMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +51,7 @@ public class RegisterFragment extends Fragment {
         confirmPassword = rootView.findViewById(R.id.confirmPassword);
         registerButton = rootView.findViewById(R.id.register);
         returnToLoginButton = rootView.findViewById(R.id.returnToLogIn);
+        usernameExistsMsg = rootView.findViewById(R.id.usernameExistsMsg);
         emailExistsMsg = rootView.findViewById(R.id.emailExistsMsg);
         emailFormatMsg = rootView.findViewById(R.id.emailFormatMsg);
         passwordLengthMsg = rootView.findViewById(R.id.passwordLengthMsg);
@@ -92,7 +95,6 @@ public class RegisterFragment extends Fragment {
         } else {
             emptyInputFieldsMsg.setVisibility(TextView.GONE);
         }
-
 
         // Check if the email contains the "@" symbol
         if (!email.contains("@")) {
@@ -175,13 +177,23 @@ public class RegisterFragment extends Fragment {
             String status = jsonResponse.getString("status");
             String message = jsonResponse.getString("message");
 
+            //if the user is able to log in display meals fragment
             if ("success".equals(status)) {
-                Log.i(RegisterTest, "Registration successful. Message: " + message);
+                String user_id = jsonResponse.getString("user_id");
+                // Store the user_id to use later in the app
+                SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("user_id", user_id);
+                editor.apply();
+                Log.i(RegisterTest, "User ID: " + user_id);
+                Log.i(RegisterTest, "Registration successful: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(R.id.action_register_to_meals);
             } else if ("error".equals(status)) {
                 if (message.contains("Email already exists")) {
-                    emailExistsMsg.setVisibility(View.VISIBLE); // Show emailExistsMsg TextView
+                    emailExistsMsg.setVisibility(View.VISIBLE);
+                } else if (message.contains("Username already exists")) {
+                    usernameExistsMsg.setVisibility(View.VISIBLE);
                 }
                 Log.e(RegisterTest, "Registration failed. Message: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -212,8 +224,6 @@ public class RegisterFragment extends Fragment {
         data.put("email", registerEmail.getText().toString());
         data.put("username", registerUsername.getText().toString());
         data.put("password", registerPassword.getText().toString());
-        data.put("confirmedPassword", confirmPassword.getText().toString());
-
         return data;
     }
 }
