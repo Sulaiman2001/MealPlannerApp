@@ -32,10 +32,10 @@ import uk.ac.aston.cs3mdd.mealplanner.R;
 public class RegisterFragment extends Fragment {
     private static final String RegisterTest = "RegisterFragment";
 
-    private EditText registerUsername, registerPassword, confirmPassword;
+    private EditText registerEmail, registerUsername, registerPassword, confirmPassword;
     private Button registerButton, returnToLoginButton;
 
-    private TextView  passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg, emptyInputFieldsMsg;
+    private TextView  emailExistsMsg, emailFormatMsg, passwordLengthMsg, passwordCapitalLetterMsg, passwordMatchMsg, passwordNumberMsg, emptyInputFieldsMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,11 +43,14 @@ public class RegisterFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
 
+        registerEmail = rootView.findViewById(R.id.registerEmail);
         registerUsername = rootView.findViewById(R.id.registerUsername);
         registerPassword = rootView.findViewById(R.id.registerPassword);
         confirmPassword = rootView.findViewById(R.id.confirmPassword);
         registerButton = rootView.findViewById(R.id.register);
         returnToLoginButton = rootView.findViewById(R.id.returnToLogIn);
+        emailExistsMsg = rootView.findViewById(R.id.emailExistsMsg);
+        emailFormatMsg = rootView.findViewById(R.id.emailFormatMsg);
         passwordLengthMsg = rootView.findViewById(R.id.passwordLengthMsg);
         passwordCapitalLetterMsg = rootView.findViewById(R.id.passwordCapitalLetterMsg);
         passwordMatchMsg = rootView.findViewById(R.id.passwordMatchMsg);
@@ -74,8 +77,9 @@ public class RegisterFragment extends Fragment {
 
     private void registerUser() {
 
-        final String username = registerUsername.getText().toString().trim();
-        final String password = registerPassword.getText().toString().trim();
+        String email = registerEmail.getText().toString().trim();
+        String username = registerUsername.getText().toString().trim();
+        String password = registerPassword.getText().toString().trim();
         String confirmedPassword = confirmPassword.getText().toString().trim();
 
         boolean hasError = false; // Variable to track if any error occurred
@@ -85,30 +89,49 @@ public class RegisterFragment extends Fragment {
             Toast.makeText(getActivity(), "All fields must be filled", Toast.LENGTH_SHORT).show();
             emptyInputFieldsMsg.setVisibility(TextView.VISIBLE);
             return;
+        } else {
+            emptyInputFieldsMsg.setVisibility(TextView.GONE);
+        }
+
+
+        // Check if the email contains the "@" symbol
+        if (!email.contains("@")) {
+            emailFormatMsg.setVisibility(TextView.VISIBLE);
+            hasError = true;
+        } else{
+            emailFormatMsg.setVisibility(TextView.GONE);
         }
 
         // Check the password is at least 8 characters
         if (password.length() < 8) {
             passwordLengthMsg.setVisibility(TextView.VISIBLE);
             hasError = true;
+        } else {
+            passwordLengthMsg.setVisibility(TextView.GONE);
         }
 
         // Check the password contains a number
         if (!password.matches(".*[1-9].*")) {
             passwordNumberMsg.setVisibility(TextView.VISIBLE);
             hasError = true;
+        } else {
+            passwordNumberMsg.setVisibility(TextView.GONE);
         }
 
         // Check the password contains a capital character
         if (!password.matches(".*[A-Z].*")) {
             passwordCapitalLetterMsg.setVisibility(TextView.VISIBLE);
             hasError = true;
+        } else {
+            passwordCapitalLetterMsg.setVisibility(TextView.GONE);
         }
 
         // Check if passwords match
         if (!password.equals(confirmedPassword)) {
             passwordMatchMsg.setVisibility(TextView.VISIBLE);
             hasError = true;
+        } else {
+            passwordMatchMsg.setVisibility(TextView.GONE);
         }
 
         if (hasError) {
@@ -156,8 +179,10 @@ public class RegisterFragment extends Fragment {
                 Log.i(RegisterTest, "Registration successful. Message: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(requireView()).navigate(R.id.action_register_to_meals);
-            } else {
-
+            } else if ("error".equals(status)) {
+                if (message.contains("Email already exists")) {
+                    emailExistsMsg.setVisibility(View.VISIBLE); // Show emailExistsMsg TextView
+                }
                 Log.e(RegisterTest, "Registration failed. Message: " + message);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
@@ -167,6 +192,7 @@ public class RegisterFragment extends Fragment {
             Log.e(RegisterTest, "JSON parsing error: " + e.getMessage());
         }
     }
+
 
     private void handleRegistrationError(VolleyError error) {
         Log.e(RegisterTest, "Volley error: " + error.getMessage(), error);
@@ -183,6 +209,7 @@ public class RegisterFragment extends Fragment {
 
     private Map<String, String> createRegistrationParams() {
         Map<String, String> data = new HashMap<>();
+        data.put("email", registerEmail.getText().toString());
         data.put("username", registerUsername.getText().toString());
         data.put("password", registerPassword.getText().toString());
         data.put("confirmedPassword", confirmPassword.getText().toString());
