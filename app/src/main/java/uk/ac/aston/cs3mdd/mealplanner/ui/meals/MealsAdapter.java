@@ -39,6 +39,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
+        // Set cooking time
         holder.cookingTime.setText(formatCookingTime(meal.getCookingTime()));
 
         // Set title
@@ -62,7 +63,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
         Picasso.get().load(meal.getImagePath()).into(holder.imageView);
 
-        // Set onClickListener for the mealDetails button
+        // onClickListener for the find out more button
         holder.mealDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +115,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
-            calories = itemView.findViewById(R.id.caloriesTextView);
+            //calories = itemView.findViewById(R.id.caloriesTextView);
         }
     }
 

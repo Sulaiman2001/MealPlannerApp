@@ -16,7 +16,9 @@ public class Meal {
 
 
 
-    public Meal(Integer mealID, String title,String mealType, String imagePath, Boolean isVegetarian, Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves, Integer favouriteCount, Integer calories) {
+    public Meal(Integer mealID, String title,String mealType, String imagePath, Boolean isVegetarian
+            , Boolean isVegan, Integer cookingTime, String recipe, String ingredients, Integer serves
+            , Integer favouriteCount, Integer calories) {
         this.mealID = mealID;
         this.title = title;
         this.mealType = mealType;
