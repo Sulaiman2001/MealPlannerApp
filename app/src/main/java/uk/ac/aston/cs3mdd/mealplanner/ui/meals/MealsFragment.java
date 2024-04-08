@@ -39,6 +39,8 @@ public class MealsFragment extends Fragment {
 
     private static final String TAG = "MealsFragment";
     private List<Meal> meals;
+    private List<Meal> filteredMeals;
+
     private RecyclerView recyclerView;
     private MealsAdapter mealsAdapter;
     private EditText searchEditText;
@@ -69,6 +71,7 @@ public class MealsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_meals, container, false);
 
         meals = new ArrayList<>();
+        filteredMeals = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView);
 
         // Pass the FragmentManager to MealsAdapter
@@ -110,6 +113,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
 
@@ -125,6 +131,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
         vegetarianFilterButton.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +148,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
 
@@ -154,6 +166,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
 
@@ -170,6 +185,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.active_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
 
@@ -185,6 +203,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.active_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
+
+                searchEditText.setText("");
+
             }
         });
 
@@ -200,6 +221,9 @@ public class MealsFragment extends Fragment {
                 breakfastFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.active_button_background);
+
+                searchEditText.setText("");
+
             }
         });
         searchEditText = rootView.findViewById(R.id.searchEditText);
@@ -227,7 +251,7 @@ public class MealsFragment extends Fragment {
     private void filter(String searchText) {
         List<Meal> searchedMeals = new ArrayList<>();
 
-        for (Meal meal : meals) {
+        for (Meal meal : meals) { // Filter from the complete list of meals
             if (meal.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
                 searchedMeals.add(meal);
             }
@@ -235,6 +259,7 @@ public class MealsFragment extends Fragment {
 
         mealsAdapter.setMeals(searchedMeals);
     }
+
 
 
     private void fetchMealData(){
@@ -246,6 +271,7 @@ public class MealsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         meals.clear();
+                        filteredMeals.clear();
                         handleFetchMealDataResponse(response);
                     }
                 },
@@ -270,8 +296,11 @@ public class MealsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Clear the existing list of meals
                         meals.clear();
+                        filteredMeals.clear(); // Clear the filtered list as well
                         // Handle the response to populate the list with vegan meals
                         handleFetchMealDataResponse(response);
+                        filteredMeals.addAll(meals);
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -280,6 +309,7 @@ public class MealsFragment extends Fragment {
                         handleFetchMealDataError(error);
                     }
                 });
+
 
         // Add the request to the RequestQueue
         queue.add(jsonArrayRequest);
@@ -295,6 +325,7 @@ public class MealsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Clear the existing list of meals
                         meals.clear();
+                        filteredMeals.clear();
                         // Handle the response to populate the list with vegan meals
                         handleFetchMealDataResponse(response);
                     }
@@ -320,6 +351,7 @@ public class MealsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Clear the existing list of meals
                         meals.clear();
+                        filteredMeals.clear();
                         // Handle the response to populate the list with vegan meals
                         handleFetchMealDataResponse(response);
                     }
@@ -345,6 +377,7 @@ public class MealsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Clear the existing list of meals
                         meals.clear();
+                        filteredMeals.clear();
                         // Handle the response to populate the list with meals of specified type
                         handleFetchMealDataResponse(response);
                     }
@@ -363,6 +396,8 @@ public class MealsFragment extends Fragment {
     private void handleFetchMealDataResponse(JSONArray response) {
         try {
             if (response.length() > 0) {
+                meals.clear();
+                filteredMeals.clear();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject mealJson = response.getJSONObject(i);
                     // Log the meal information
@@ -384,6 +419,7 @@ public class MealsFragment extends Fragment {
                     Meal meal = new Meal(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, favouriteCount, calories);
 
                     meals.add(meal);
+                    filteredMeals.add(meal);
                 }
                 mealsAdapter.notifyDataSetChanged();
             } else {
