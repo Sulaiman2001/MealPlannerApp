@@ -1,11 +1,14 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.meals;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -38,6 +41,7 @@ public class MealsFragment extends Fragment {
     private List<Meal> meals;
     private RecyclerView recyclerView;
     private MealsAdapter mealsAdapter;
+    private EditText searchEditText;
 
     public MealsFragment() {
         // Required empty public constructor
@@ -198,6 +202,21 @@ public class MealsFragment extends Fragment {
                 dinnerFilterButton.setBackgroundResource(R.drawable.active_button_background);
             }
         });
+        searchEditText = rootView.findViewById(R.id.searchEditText);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
         // fetch all meals
         fetchMealData();
@@ -205,6 +224,17 @@ public class MealsFragment extends Fragment {
         return rootView;
     }
 
+    private void filter(String searchText) {
+        List<Meal> searchedMeals = new ArrayList<>();
+
+        for (Meal meal : meals) {
+            if (meal.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
+                searchedMeals.add(meal);
+            }
+        }
+
+        mealsAdapter.setMeals(searchedMeals);
+    }
 
 
     private void fetchMealData(){

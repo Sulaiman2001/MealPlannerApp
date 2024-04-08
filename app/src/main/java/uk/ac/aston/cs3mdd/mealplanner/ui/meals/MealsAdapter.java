@@ -22,6 +22,7 @@ import uk.ac.aston.cs3mdd.mealplanner.R;
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
     private List<Meal> meals;
     private FragmentManager fragmentManager;
+    private List<Meal> searchedMeals;
 
     public MealsAdapter(List<Meal> meals, FragmentManager fragmentManager) {
         this.meals = meals;
@@ -74,6 +75,11 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
         });
     }
 
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return meals.size();
@@ -111,6 +117,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             calories = itemView.findViewById(R.id.caloriesTextView);
         }
     }
+
 
     private void openMealDetailsFragment(Meal meal, View view) {
         Bundle bundle = new Bundle();

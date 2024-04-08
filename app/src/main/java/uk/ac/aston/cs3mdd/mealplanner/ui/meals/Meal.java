@@ -58,8 +58,8 @@ public class Meal {
     }
     public Integer getServes() { return serves; }
     public Integer getFavouriteCount(){ return favouriteCount;}
-
     public Integer getCalories() {
         return calories;
     }
+
 }
