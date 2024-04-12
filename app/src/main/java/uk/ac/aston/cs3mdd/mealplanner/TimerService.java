@@ -1,6 +1,5 @@
 package uk.ac.aston.cs3mdd.mealplanner;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -75,10 +74,10 @@ public class TimerService extends Service {
     }
 
     private void createNotificationChannel() {
-        // Create a notification channel for Android Oreo and higher
+        // Create the NotificationChannel for API 26+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Timer Channel";
-            String description = "Channel for timer notifications";
+            CharSequence name = "Timer ";
+            String description = "Notification for timer";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
             channel.setDescription(description);
@@ -87,28 +86,17 @@ public class TimerService extends Service {
         }
     }
 
-    private Notification buildNotification() {
-        // Create a notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_meal)
-                .setContentTitle("Timer Service")
-                .setContentText("Timer is running")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-
-        return builder.build();
-    }
-
     private void sendNotification() {
-        // Create an intent for launching an activity when the notification is clicked
+        // Create Intent
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE); // Specify the appropriate flags here
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        // Create a notification
+        // Creates a notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_meal)
                 .setContentTitle("Timer Complete")
-                .setContentText("Your timer has finished!")
+                .setContentText("Quick check on your food!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

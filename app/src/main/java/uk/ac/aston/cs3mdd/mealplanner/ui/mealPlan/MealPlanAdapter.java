@@ -29,14 +29,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
-import uk.ac.aston.cs3mdd.mealplanner.ui.meals.Meal;
 
 public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealViewHolder> {
     private List<MealPlan> mealPlans;
@@ -190,6 +187,8 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
                     Map<String, String> params = new HashMap<>();
                     params.put("user_id", getUserIDFromSharedPreferences(context));
                     params.put("meal_id", String.valueOf(mealPlan.getMealID()));
+                    params.put("meal_plan_id", String.valueOf(mealPlan.getMealPlanID()));
+
                     return params;
                 }
             };
@@ -233,6 +232,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
 
     private void openMealDetailsFragment(MealPlan meal, View view) {
         Bundle bundle = new Bundle();
+        bundle.putInt("mealPlanID", meal.getMealPlanID());
         bundle.putInt("mealID", meal.getMealID());
         bundle.putString("title", meal.getTitle());
         bundle.putString("meal_type", meal.getMealType());

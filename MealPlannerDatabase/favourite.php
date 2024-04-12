@@ -1,11 +1,6 @@
 <?php
 
-include "conn.php";
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-// Set content type header to ensure proper JSON handling
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['meal_id'], $_POST['is_favourited'])) {
@@ -14,6 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['me
     $is_favourited = $_POST['is_favourited'];
 
     $is_favourited = $is_favourited == 1 ? 1 : 0;
+
+    include "conn.php";
 
     // Check if the record already exists
     $checkQuery = "SELECT * FROM favourites WHERE user_favourite_id = ? AND meal_favourite_id = ?";
@@ -25,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['me
         mysqli_stmt_store_result($checkStmt);
 
         if (mysqli_stmt_num_rows($checkStmt) > 0) {
-            // The record already exists, handle accordingly (e.g., set error response)
+            // The record already exists
             $response['status'] = 'error';
             $response['message'] = 'Meal is already in favorites';
         } else {
-            // The record doesn't exist, proceed with the insertion
+            // The record doesn't exist insert the data into the table
             $insertQuery = "INSERT INTO favourites (user_favourite_id, meal_favourite_id, is_favourited) VALUES (?, ?, ?)";
             $insertStmt = mysqli_prepare($conn, $insertQuery);
 

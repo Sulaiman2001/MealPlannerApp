@@ -1,7 +1,7 @@
 <?php
 include "conn.php";
 
-// Check if the request contains a parameter to filter vegan meals
+// Check if the request contains a parameter for each filter option
 $filterByVegan = isset($_GET['vegan']) ? $_GET['vegan'] : null;
 $filterByVegetarian = isset($_GET['vegetarian']) ? $_GET['vegetarian'] : null;
 $filterByCookingTime = isset($_GET['cooking_time']) ? $_GET['cooking_time'] : null;
@@ -14,15 +14,17 @@ if ($filterByVegan == 1) {
     $sql .= " WHERE vegan = 1";
 }
 
-// If the filterByVegetarian parameter is provided and is set to 1, filter vegan meals
+// If the filterByVegetarian parameter is provided and is set to 1, filter vegetarian meals
 if ($filterByVegetarian == 1) {
     $sql .= " WHERE vegetarian = 1";
 }
 
+// If the filterByCookingTime parameter is provided and is set to 1, filter less that 1 hour meals
 if ($filterByCookingTime == 1) {
     $sql .= " WHERE time_to_cook < 60";
 }
 
+// It will filter by the meal type (breakfast, lunch and dinner)
 if (!empty($filterByMealType)) {
     $sql .= " WHERE meal_type = '$filterByMealType'";
 }

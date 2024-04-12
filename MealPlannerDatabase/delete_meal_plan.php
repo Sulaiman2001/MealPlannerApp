@@ -10,6 +10,8 @@ header('Content-Type: application/json');
 // Retrieve user_id and meal_id from the request
 $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
 $meal_id = isset($_POST['meal_id']) ? $_POST['meal_id'] : null;
+$meal_plan_id = isset($_POST['meal_plan_id']) ? $_POST['meal_plan_id'] : null;
+
 
 // Check if 'user_id' and 'meal_id' are set in the request
 if ($user_id === null || $meal_id === null) {
@@ -19,9 +21,9 @@ if ($user_id === null || $meal_id === null) {
 }
 
 // Delete ingredients from shopping_list
-$sql_delete_ingredients = "DELETE FROM shopping_list WHERE shopping_list_meal_id IN (SELECT meal_plan_id FROM meal_plan WHERE user_id = ? AND meal_id = ?)";
+$sql_delete_ingredients = "DELETE FROM shopping_list WHERE user_id = ? AND shopping_list_meal_id = ?";
 $stmt_delete_ingredients = $conn->prepare($sql_delete_ingredients);
-$stmt_delete_ingredients->bind_param("ii", $user_id, $meal_id);
+$stmt_delete_ingredients->bind_param("ii", $user_id, $meal_plan_id);
 $stmt_delete_ingredients->execute();
 
 if ($stmt_delete_ingredients->error) {
@@ -31,9 +33,9 @@ if ($stmt_delete_ingredients->error) {
 }
 
 // Delete meal from meal_plan
-$sql_delete_meal = "DELETE FROM meal_plan WHERE user_id = ? AND meal_id = ?";
+$sql_delete_meal = "DELETE FROM meal_plan WHERE user_id = ? AND meal_plan_id = ?";
 $stmt_delete_meal = $conn->prepare($sql_delete_meal);
-$stmt_delete_meal->bind_param("ii", $user_id, $meal_id);
+$stmt_delete_meal->bind_param("ii", $user_id, $meal_plan_id);
 $stmt_delete_meal->execute();
 
 if ($stmt_delete_meal->error) {

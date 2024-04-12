@@ -200,7 +200,7 @@ public class ShoppingListFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private void deleteItemFromDatabase(Integer ingredientID, boolean isCustom) { // Modify method signature
+    private void deleteItemFromDatabase(Integer ingredientID, boolean isCustom) {
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_shopping_list_items.php";
         RequestQueue queue = Volley.newRequestQueue(requireContext());
 
@@ -260,7 +260,7 @@ public class ShoppingListFragment extends Fragment {
         // Volley RequestQueue
         RequestQueue queue = Volley.newRequestQueue(requireContext());
 
-        // POST parameters
+        // Parameters used to add to the database
         Map<String, String> params = new HashMap<>();
         params.put("user_id", userID);
         params.put("ingredient_name", ingredientName);
@@ -279,7 +279,7 @@ public class ShoppingListFragment extends Fragment {
                             String message = jsonResponse.getString("message");
 
                             if (status.equals("success")) {
-                                // Ingredient added successfully
+                                // Ingredient added
                                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                                 // Refresh shopping list data after adding the ingredient
                                 fetchShoppingListData();
@@ -326,8 +326,7 @@ public class ShoppingListFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String ingredientName = editTextIngredientName.getText().toString();
                         String amount = editTextAmount.getText().toString();
-                        // Handle the addition of the ingredient here
-                        // For example, you can add it to your shopping list data or send it to the server
+
                         Toast.makeText(requireContext(), "Added ingredient to the shopping list" + ingredientName + amount, Toast.LENGTH_SHORT).show();
                         addCustomIngredient(ingredientName, amount);
                     }
@@ -345,16 +344,25 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Restore checkbox states when the fragment is resumed
-        restoreCheckboxStates();
+        // Restore checkbox states only if the shoppingItemList is not empty
+        if (!shoppingItemList.isEmpty()) {
+            restoreCheckboxStates();
+        }
     }
 
     private void restoreCheckboxStates() {
-        for (int i = 0; i < shoppingItemList.size(); i++) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int firstPosition = layoutManager.findFirstVisibleItemPosition();
+        int lastPosition = layoutManager.findLastVisibleItemPosition();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (int i = firstPosition; i <= lastPosition; i++) {
             boolean isChecked = sharedPreferences.getBoolean("checkbox_" + i, false);
             shoppingItemList.get(i).setChecked(isChecked);
+            editor.putBoolean("checkbox_" + i, isChecked);
         }
-        adapter.notifyDataSetChanged();
+        editor.apply();
+        adapter.notifyItemRangeChanged(firstPosition, lastPosition - firstPosition + 1);
     }
 
     private void saveCheckboxStates() {

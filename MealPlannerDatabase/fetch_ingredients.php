@@ -15,7 +15,7 @@ $sql_meal_plan = "SELECT meal_plan.meal_plan_id, meal_plan.date, meal_plan.meal_
 $result_meal_plan = $conn->query($sql_meal_plan);
 
 // Fetch current date
-$current_date = date("Y-m-d"); // Get the current date
+$current_date = date("Y-m-d"); 
 
 // Iterate over meal plans
 if ($result_meal_plan->num_rows > 0) {
@@ -26,7 +26,7 @@ if ($result_meal_plan->num_rows > 0) {
 
         // Check if the scheduled date is before the current date
         if ($scheduled_date < $current_date) {
-            // For past meals, fetch shopping list items associated with this meal plan
+            // For past meals fetch shopping list items associated with this meal plan
             $sql_shopping_list_items = "SELECT shopping_list.shopping_list_id FROM shopping_list 
                                         INNER JOIN meal_plan ON shopping_list.shopping_list_meal_id = meal_plan.meal_plan_id
                                         WHERE meal_plan.meal_plan_id = '$meal_plan_id'";

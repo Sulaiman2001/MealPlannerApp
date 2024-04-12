@@ -127,6 +127,8 @@ public class MealsFragment extends Fragment {
                 lunchFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
                 dinnerFilterButton.setBackgroundResource(R.drawable.inactive_button_background);
 
+                searchEditText.setText("");
+
             }
         });
 
@@ -241,7 +243,6 @@ public class MealsFragment extends Fragment {
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not used
             }
 
             @Override
@@ -252,7 +253,6 @@ public class MealsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Not used
             }
         });
 
@@ -314,7 +314,8 @@ public class MealsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Clear the existing list of meals
                         meals.clear();
-                        filteredMeals.clear(); // Clear the filtered list as well
+                        filteredMeals.clear();
+
                         // Handle the response to populate the list with vegan meals
                         handleFetchMealDataResponse(response);
                         filteredMeals.addAll(meals);

@@ -112,6 +112,7 @@ public class MealPlanHistoryFragment extends Fragment {
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject mealJson = response.getJSONObject(i);
+                    Integer mealPlanID = mealJson.getInt("meal_plan_id");
                     String date = mealJson.getString("date");
 
                     // Skip meals with dates that have passed
@@ -132,7 +133,7 @@ public class MealPlanHistoryFragment extends Fragment {
                     Integer favouriteCount = mealJson.getInt("favourite_count");
                     Integer calories = mealJson.getInt("calories");
 
-                    MealPlan mealPlan = new MealPlan(mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount,calories);
+                    MealPlan mealPlan = new MealPlan(mealPlanID, mealID, title, mealType, imagePath, isVegetarian, isVegan, cookingTime, recipe, ingredients, serves, date, favouriteCount,calories);
 
                     mealPlans.add(mealPlan);
                 }

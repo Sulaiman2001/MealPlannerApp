@@ -1,7 +1,5 @@
 package uk.ac.aston.cs3mdd.mealplanner.ui.favourites;
 
-import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,7 +33,6 @@ import java.util.Map;
 
 import uk.ac.aston.cs3mdd.mealplanner.R;
 import uk.ac.aston.cs3mdd.mealplanner.ui.meals.Meal;
-import uk.ac.aston.cs3mdd.mealplanner.ui.meals.MealsAdapter;
 
 // FavouritesAdapter.java
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.MealViewHolder> {
@@ -153,12 +150,12 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
 
             // Create a confirmation dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Delete Meal from Favorites");
-            builder.setMessage("Are you sure you want to delete this meal from your favorites?");
+            builder.setTitle("Delete Meal from favourites");
+            builder.setMessage("Are you sure you want to delete this meal from your favourites?");
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Call the server to delete the meal from favorites
+                    // Call the server to delete the meal from favourites
                     RequestQueue queue = Volley.newRequestQueue(context);
                     String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_favourite_meal.php";
 
@@ -172,16 +169,16 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
                                     meals.remove(position);
                                     notifyItemRemoved(position);
                                     // Show a toast or provide feedback to the user
-                                    Toast.makeText(itemView.getContext(), "Meal deleted from favorites", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(itemView.getContext(), "Meal deleted from favourites", Toast.LENGTH_SHORT).show();
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     // Handle the error if needed
-                                    Log.e(TAG, "Error deleting meal from favorites: " + error.getMessage(), error);
+                                    Log.e(TAG, "Error deleting meal from favourites: " + error.getMessage(), error);
                                     // Show a toast or provide feedback to the user
-                                    Toast.makeText(itemView.getContext(), "Error deleting meal from favorites", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(itemView.getContext(), "Error deleting meal from favourites", Toast.LENGTH_SHORT).show();
                                 }
                             }) {
                         @Override

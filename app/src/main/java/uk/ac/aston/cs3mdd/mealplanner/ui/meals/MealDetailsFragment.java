@@ -95,11 +95,11 @@ public class MealDetailsFragment extends Fragment {
         SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
         user_id = preferences.getString("user_id", "");  // Using instance variable
 
-        // Retrieve data from arguments
+        // Retrieve data from the bundle
         Bundle bundle = getArguments();
         if (bundle != null) {
 
-            mealID = bundle.getInt("mealID");  // Using instance variable
+            mealID = bundle.getInt("mealID");
             String title = bundle.getString("title");
             String mealType = bundle.getString("meal_type");
             String imagePath = bundle.getString("imagePath");
@@ -126,6 +126,7 @@ public class MealDetailsFragment extends Fragment {
             Button addToMealPlan = rootView.findViewById(R.id.addToMealPlan);
             TextView favouriteCountTextView = rootView.findViewById(R.id.favouriteCount);
             TextView caloriesTextView = rootView.findViewById(R.id.caloriesTextView);
+
             startTimerButton = rootView.findViewById(R.id.startTimerButton);
             pauseTimerButton = rootView.findViewById(R.id.pauseTimerButton);
             endTimerButton = rootView.findViewById(R.id.endTimerButton);
@@ -154,7 +155,7 @@ public class MealDetailsFragment extends Fragment {
                 public void onClick(View v) {
                     Log.d("MealDetailsFragment", "user_id: " + user_id);
                     Log.d("MealDetailsFragment", "meal_id: " + mealID);
-                    Log.d("MealDetailsFragment", "is_favourited: " + "1"); // Assuming it's always set to 1
+                    Log.d("MealDetailsFragment", "is_favourited: " + "1");
 
                     markAsFavourite();
                 }
@@ -278,7 +279,7 @@ public class MealDetailsFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("user_id", user_id);
         data.put("meal_id", mealID);
-        data.put("is_favourited", "1"); // Assuming you want to set is_favourited to 1 when marking as a Favourite
+        data.put("is_favourited", "1");
 
         return data;
     }
@@ -405,14 +406,14 @@ public class MealDetailsFragment extends Fragment {
         // Reset the timer
         if (countDownTimer != null) {
             countDownTimer.cancel();
-            countDownTimer = null; // Reset the instance
+            countDownTimer = null;
         }
 
-        // Initialize a new CountDownTimer
+        // Initialise the timer
         countDownTimer = new CountDownTimer(totalMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                // Timer is still running, update text
+                // Update the timer text
                 updateCountDownText(millisUntilFinished);
             }
 
@@ -429,6 +430,7 @@ public class MealDetailsFragment extends Fragment {
 
 
     private void updateCountDownText(long timeLeftInMillis) {
+        // Convert into hours, minutes and seconds
         int hours = (int) (timeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((timeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (timeLeftInMillis / 1000) % 60;
@@ -447,7 +449,7 @@ public class MealDetailsFragment extends Fragment {
 
     private void pauseTimer() {
         if (countDownTimer != null) {
-            countDownTimer.cancel(); // Pause the timer
+            countDownTimer.cancel();
         }
     }
 
@@ -479,7 +481,7 @@ public class MealDetailsFragment extends Fragment {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            // If parsing fails (e.g., empty input), return 0 or handle the error as needed
+            // If parsing fails return 0
             return 0;
         }
     }
