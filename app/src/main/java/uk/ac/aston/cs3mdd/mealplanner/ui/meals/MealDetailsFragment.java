@@ -155,7 +155,6 @@ public class MealDetailsFragment extends Fragment {
                 public void onClick(View v) {
                     Log.d("MealDetailsFragment", "user_id: " + user_id);
                     Log.d("MealDetailsFragment", "meal_id: " + mealID);
-                    Log.d("MealDetailsFragment", "is_favourited: " + "1");
 
                     markAsFavourite();
                 }
@@ -279,7 +278,6 @@ public class MealDetailsFragment extends Fragment {
         Map<String, String> data = new HashMap<>();
         data.put("user_id", user_id);
         data.put("meal_id", mealID);
-        data.put("is_favourited", "1");
 
         return data;
     }
