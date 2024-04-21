@@ -41,6 +41,7 @@ public class TimerService extends Service {
                 public void onTick(long millisUntilFinished) {
                     // Broadcast the remaining time to any interested components
                     Intent tickIntent = new Intent(TIMER_UPDATE_ACTION);
+
                     tickIntent.putExtra("timeLeftInMillis", millisUntilFinished);
                     sendBroadcast(tickIntent);
                 }

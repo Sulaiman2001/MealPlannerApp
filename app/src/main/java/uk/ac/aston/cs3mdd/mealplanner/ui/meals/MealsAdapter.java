@@ -115,7 +115,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
-            //calories = itemView.findViewById(R.id.caloriesTextView);
+            calories = itemView.findViewById(R.id.caloriesTextView);
         }
     }
 

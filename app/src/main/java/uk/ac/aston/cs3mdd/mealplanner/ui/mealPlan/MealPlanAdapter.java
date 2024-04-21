@@ -119,6 +119,8 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         TextView recipe;
         TextView ingredients;
         TextView serves;
+        TextView calories;
+
         TextView date;
         Button delete;
         TextView favouriteCount;
@@ -137,6 +139,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
+            calories = itemView.findViewById(R.id.caloriesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
 
             delete = itemView.findViewById(R.id.delete);
@@ -245,6 +248,8 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         bundle.putInt("serves", meal.getServes());
         bundle.putString("date", meal.getDate());
         bundle.putInt("favourite_count", meal.getFavouriteCount());
+        bundle.putInt("calories", meal.getCalories());
+
 
         if (showDeleteButton == false){
             Navigation.findNavController(view).navigate(R.id.action_meal_plan_history_to_mealDetails, bundle);
