@@ -115,6 +115,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         TextView recipe;
         TextView ingredients;
         TextView serves;
+        TextView calories;
         Button delete;
         TextView favouriteCount;
 
@@ -131,6 +132,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             recipe = itemView.findViewById(R.id.mealInformationTextView);
             ingredients = itemView.findViewById(R.id.mealInformationTextView);
             serves = itemView.findViewById(R.id.servesTextView);
+            calories = itemView.findViewById(R.id.servesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
 
             delete = itemView.findViewById(R.id.delete);
@@ -227,6 +229,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         bundle.putString("recipe", meal.getRecipe());
         bundle.putString("ingredients", meal.getIngredients());
         bundle.putInt("serves", meal.getServes());
+        bundle.putInt("calories", meal.getCalories());
         bundle.putInt("favourite_count", meal.getFavouriteCount());
 
         Navigation.findNavController(view).navigate(R.id.action_favourites_to_mealDetails, bundle);
