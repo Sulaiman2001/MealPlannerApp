@@ -60,7 +60,7 @@ public class RegisterFragment extends Fragment {
         passwordNumberMsg = rootView.findViewById(R.id.passwordNumberMsg);
         emptyInputFieldsMsg = rootView.findViewById(R.id.emptyInputFieldsMsg);
 
-
+        //OnClickListener for registering an account
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +68,7 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        //OnClickListener to go to log in screen
         returnToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +88,7 @@ public class RegisterFragment extends Fragment {
 
         boolean hasError = false; // Variable to track if any error occurred
 
-        // Check if username, password, and confirmed password are not empty
+        // Check if username, password and confirmed password are not empty
         if (username.isEmpty() || password.isEmpty() || confirmedPassword.isEmpty()) {
             Toast.makeText(getActivity(), "All fields must be filled", Toast.LENGTH_SHORT).show();
             emptyInputFieldsMsg.setVisibility(TextView.VISIBLE);
@@ -143,7 +144,7 @@ public class RegisterFragment extends Fragment {
         Log.i(RegisterTest, "Passwords match. Sending registration request...");
 
 
-
+        // Request to register an account
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/register.php";
 
@@ -170,6 +171,7 @@ public class RegisterFragment extends Fragment {
         // Add the request to the RequestQueue
         queue.add(postRequest);
     }
+
 
     private void handleRegistrationResponse(String response) {
         try {
@@ -219,6 +221,7 @@ public class RegisterFragment extends Fragment {
         Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    // Hash map to send the user details to the registration account
     private Map<String, String> createRegistrationParams() {
         Map<String, String> data = new HashMap<>();
         data.put("email", registerEmail.getText().toString());

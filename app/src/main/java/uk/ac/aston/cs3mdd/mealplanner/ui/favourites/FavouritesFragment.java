@@ -64,14 +64,14 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void loadFavouriteMeals() {
-        // Retrieve user_id from shared preferences
+        // Retrieve user data
         SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
         String user_id = preferences.getString("user_id", "");
 
+        // Volley request to fetch the favourited meals
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_favourite_meals.php";
 
-        // Pass user_id to the server to fetch only the favorite meals for the logged-in user
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -95,6 +95,8 @@ public class FavouritesFragment extends Fragment {
                         handleFetchFavouriteMealsError(error);
                     }
                 }) {
+
+            // Store the user details
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -104,13 +106,13 @@ public class FavouritesFragment extends Fragment {
         };
 
 
-// Add the request to the RequestQueue
         queue.add(stringRequest);
     }
 
 
     private void handleFetchFavouriteMealsResponse(JSONArray response) {
         try {
+            // Iterate through the meals
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject mealJson = response.getJSONObject(i);

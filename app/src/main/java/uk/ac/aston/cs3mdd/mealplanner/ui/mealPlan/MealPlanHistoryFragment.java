@@ -70,6 +70,7 @@ public class MealPlanHistoryFragment extends Fragment {
         SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
         String user_id = preferences.getString("user_id", "");
 
+        //Requests the meals stored in the meal_plan table
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meal_plan.php";
 
@@ -95,6 +96,8 @@ public class MealPlanHistoryFragment extends Fragment {
                         handleFetchMealPlansError(error);
                     }
                 }) {
+
+            // Store the user details
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -111,15 +114,16 @@ public class MealPlanHistoryFragment extends Fragment {
         try {
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
+                    //Extract the data from the JSon object
+
                     JSONObject mealJson = response.getJSONObject(i);
                     Integer mealPlanID = mealJson.getInt("meal_plan_id");
                     String date = mealJson.getString("date");
 
-                    // Skip meals with dates that have passed
+                    // Display meals with dates that have passed
                     if (isDateBeforeToday(date)) {
                         continue;
                     }
-
                     Integer mealID = mealJson.getInt("meal_id");
                     String title = mealJson.getString("title");
                     String mealType = mealJson.getString("meal_type");

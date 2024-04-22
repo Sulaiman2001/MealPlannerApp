@@ -264,7 +264,7 @@ public class MealsFragment extends Fragment {
     private void filterMeals(String searchText) {
         filteredMeals.clear();
         if (TextUtils.isEmpty(searchText)) {
-            // If the search field is empty, show all meals
+            // If the search field is empty show all meals
             filteredMeals.addAll(meals);
         } else {
             // Filter meals based on the search text
@@ -279,6 +279,7 @@ public class MealsFragment extends Fragment {
         mealsAdapter.notifyDataSetChanged();
     }
 
+    // Request to retrieve all meals
     private void fetchMealData(){
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php";
@@ -303,7 +304,7 @@ public class MealsFragment extends Fragment {
         queue.add(jsonArrayRequest);
 
     }
-
+    // Request to retrieve vegan meals
     private void fetchVeganMeals() {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?vegan=1";
@@ -334,6 +335,7 @@ public class MealsFragment extends Fragment {
         queue.add(jsonArrayRequest);
     }
 
+    // Request to retrieve vegetarian meals
     private void fetchVegetarianMeals() {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?vegetarian=1";
@@ -360,6 +362,7 @@ public class MealsFragment extends Fragment {
         queue.add(jsonArrayRequest);
     }
 
+    // Request to retrieve meals that take less than 60 mins
     private void fetchMealsLessThan60mins() {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?cooking_time=1";
@@ -386,6 +389,7 @@ public class MealsFragment extends Fragment {
         queue.add(jsonArrayRequest);
     }
 
+    // Request to retrieve meals by type
     private void fetchMealsByType(String mealType) {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meals.php?meal_type=" + mealType;

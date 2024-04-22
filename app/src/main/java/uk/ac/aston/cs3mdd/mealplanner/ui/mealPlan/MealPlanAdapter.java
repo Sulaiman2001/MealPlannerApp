@@ -41,6 +41,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     private Context context;
     private boolean showDeleteButton;
 
+    // Construct the adapter
     public MealPlanAdapter(List<MealPlan> mealPlans, FragmentManager fragmentManager, Context context, boolean showDeleteButton) {
         this.mealPlans = mealPlans;
         this.fragmentManager = fragmentManager;
@@ -58,6 +59,8 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealPlan mealPlan = mealPlans.get(position);
+
+        //Populate text views
 
         holder.delete.setVisibility(showDeleteButton ? View.VISIBLE : View.GONE);
 
@@ -107,6 +110,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
         return mealPlans.size();
     }
 
+    // Construct MealViewHolder to populate recycler view
     public class MealViewHolder extends RecyclerView.ViewHolder {
         TextView mealID;
         public TextView title;
@@ -159,7 +163,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
 
             Log.d(TAG, "Deleting meal with ID: " + mealPlan.getMealID());
 
-            // Call the server to delete the meal from favourites
+            // Call the server to delete the meal from meal plan
             RequestQueue queue = Volley.newRequestQueue(context);
             String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/delete_meal_plan.php";
 
@@ -167,9 +171,9 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // Handle the response if needed
+                            // Handle the response
                             Log.d(TAG, "Response from server after deletion: " + response);
-                            // Remove the meal from the local list
+                            // Remove the meal from the  list
                             mealPlans.remove(position);
                             notifyItemRemoved(position);
                             // Show a toast or provide feedback to the user
@@ -179,12 +183,14 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // Handle the error if needed
+                            // Handle the error
                             Log.e(TAG, "Error deleting meal from favourites: " + error.getMessage(), error);
                             // Show a toast or provide feedback to the user
                             Toast.makeText(itemView.getContext(), "Error deleting meal from meal plan", Toast.LENGTH_SHORT).show();
                         }
                     }) {
+
+                // Hash map to store the details to send to the database
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
@@ -200,6 +206,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             Log.d(TAG, "deleteMealFromMealPlan completed");
         }
 
+        //Confirm meal is being deleted or not
         private void showDeleteConfirmationDialog(MealPlan mealPlan, int position) {
             // Create a confirmation dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -233,6 +240,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
 
     }
 
+    // data to sent to the mel details fragment
     private void openMealDetailsFragment(MealPlan meal, View view) {
         Bundle bundle = new Bundle();
         bundle.putInt("mealPlanID", meal.getMealPlanID());
@@ -260,6 +268,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
 
     }
 
+    // put the cooking time in hrs and mins
     private String formatCookingTime(int cookingTimeInMinutes) {
         int hours = cookingTimeInMinutes / 60;
         int minutes = cookingTimeInMinutes % 60;

@@ -34,14 +34,13 @@ import java.util.Map;
 import uk.ac.aston.cs3mdd.mealplanner.R;
 import uk.ac.aston.cs3mdd.mealplanner.ui.meals.Meal;
 
-// FavouritesAdapter.java
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.MealViewHolder> {
     private List<Meal> meals;
     private FragmentManager fragmentManager;
     private Context context;
     private static final String TAG = "FavouritesAdapter";
 
-
+    // Constructor for the FavouritesAdapter class
     public FavouritesAdapter(List<Meal> meals, FragmentManager fragmentManager, Context context) {
         this.meals = meals;
         this.fragmentManager = fragmentManager;
@@ -58,13 +57,16 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
+        // Set cooking time
         holder.cookingTime.setText(formatCookingTime(meal.getCookingTime()));
 
         // Set title
         holder.title.setText(meal.getTitle());
 
+        // Set favourite number
         holder.favouriteCount.setText(String.valueOf(meal.getFavouriteCount()));
 
+        // Checks if the meal is vegan and then sets the tag as visible/invisible
         if ("1".equals(meal.getIsVegan())) {
             holder.vegan.setVisibility(View.VISIBLE);
         } else {
@@ -77,6 +79,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             holder.vegan.setVisibility(View.GONE);
         }
 
+        // Checks if the meal is vegetarian and then sets the tag as visible/invisible
         if (meal.getIsVegetarian()){
             holder.vegetarian.setVisibility(View.VISIBLE);
         } else {
@@ -119,6 +122,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
         Button delete;
         TextView favouriteCount;
 
+        // subclass that initialises the views
         public MealViewHolder(View itemView) {
             super(itemView);
             //mealID = itemView.findViewById(R.id.mealIDTextView);
@@ -135,6 +139,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             calories = itemView.findViewById(R.id.servesTextView);
             favouriteCount = itemView.findViewById(R.id.favouriteCount);
 
+            // delete button
             delete = itemView.findViewById(R.id.delete);
             delete.setOnClickListener(view -> {
                 Log.d(TAG, "Delete button clicked");
@@ -165,9 +170,9 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    // Handle the response if needed
+                                    // Handle the response
                                     Log.d(TAG, "Response from server after deletion: " + response);
-                                    // Remove the meal from the local list
+                                    // Remove the meal from the  list
                                     meals.remove(position);
                                     notifyItemRemoved(position);
                                     // Show a toast or provide feedback to the user
@@ -177,12 +182,14 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // Handle the error if needed
+                                    // Handle the error
                                     Log.e(TAG, "Error deleting meal from favourites: " + error.getMessage(), error);
                                     // Show a toast or provide feedback to the user
                                     Toast.makeText(itemView.getContext(), "Error deleting meal from favourites", Toast.LENGTH_SHORT).show();
                                 }
                             }) {
+
+                        // hash map for the data to be sent to the database
                         @Override
                         protected Map<String, String> getParams() {
                             Map<String, String> params = new HashMap<>();
@@ -199,7 +206,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Dismiss the dialog if "No" is clicked
+                    // Dismiss the dialog if no is clicked
                     dialog.dismiss();
                 }
             });
@@ -209,14 +216,14 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
             dialog.show();
         }
 
+        // Retrieve the correct user details
         private String getUserIDFromSharedPreferences(Context context){
             SharedPreferences preferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE);
             return preferences.getString("user_id", "");
         }
     }
 
-
-
+    // Store the meal details
     private void openMealDetailsFragment(Meal meal, View view) {
         Bundle bundle = new Bundle();
         bundle.putInt("mealID", meal.getMealID());
@@ -236,6 +243,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Me
 
     }
 
+    // Show the cooking time in hrs and mins
     private String formatCookingTime(int cookingTimeInMinutes) {
         int hours = cookingTimeInMinutes / 60;
         int minutes = cookingTimeInMinutes % 60;

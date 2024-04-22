@@ -132,6 +132,7 @@ public class MealDetailsFragment extends Fragment {
             endTimerButton = rootView.findViewById(R.id.endTimerButton);
             countdownTimerText = rootView.findViewById(R.id.countdownTimerText);
 
+            //Populate the text views
             titleTextView.setText(title);
             Picasso.get().load(imagePath).into(imageView);
             mealTypeTextView.setText(mealType);
@@ -150,6 +151,7 @@ public class MealDetailsFragment extends Fragment {
                 veganTextView.setVisibility(View.GONE);
             }
 
+            // When favourite button is clicked
             favouriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,6 +162,7 @@ public class MealDetailsFragment extends Fragment {
                 }
             });
 
+            // Display date picker dialog
             addToMealPlan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,6 +171,7 @@ public class MealDetailsFragment extends Fragment {
             });
 
             ingredientsTextView.setText(ingredients);
+            //Display either the ingredients of recipe depending on what is selected
             ingredientsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -183,6 +187,7 @@ public class MealDetailsFragment extends Fragment {
 
             caloriesTextView.setText(calories + " kcal");
 
+            //Timer control buttons
             startTimerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -213,6 +218,7 @@ public class MealDetailsFragment extends Fragment {
         sendFavouriteRequest(user_id, String.valueOf(mealID));
     }
 
+    //Request to favourite a meal
     private void sendFavouriteRequest(String user_id, String mealID) {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/favourite.php";
@@ -240,6 +246,7 @@ public class MealDetailsFragment extends Fragment {
         queue.add(postRequest);
     }
 
+    //Notify the user if it has been successful or not
     private void handleFavouriteResponse(String response) {
         Log.d(MealDetailsTest, "Raw Server Response: " + response);
 
@@ -274,6 +281,7 @@ public class MealDetailsFragment extends Fragment {
         Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    // hash map to store data referencing if the meal is favourited
     private Map<String, String> createFavouriteParams(String user_id, String mealID) {
         Map<String, String> data = new HashMap<>();
         data.put("user_id", user_id);
@@ -282,6 +290,7 @@ public class MealDetailsFragment extends Fragment {
         return data;
     }
 
+    //Interactable date picker dialog
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -306,6 +315,7 @@ public class MealDetailsFragment extends Fragment {
         addToMealPlan(user_id, String.valueOf(mealID), selectedDate);
     }
 
+    //adds the meal to the meal plan
     private void addToMealPlan(String user_id, String mealID, String selectedDate) {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/add_to_meal_plan.php";
@@ -333,6 +343,8 @@ public class MealDetailsFragment extends Fragment {
         queue.add(postRequest);
     }
 
+
+    // Notify the user if the meal was added to the mela plan
     private void handleAddToMealPlanResponse(String response) {
         try {
             JSONObject jsonResponse = new JSONObject(response);
@@ -365,6 +377,7 @@ public class MealDetailsFragment extends Fragment {
         return data;
     }
 
+    //allow the user to enter the desired amount for the timer
     private void showTimeInputDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Enter time");

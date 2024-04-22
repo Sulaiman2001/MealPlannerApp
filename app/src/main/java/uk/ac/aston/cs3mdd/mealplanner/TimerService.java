@@ -54,7 +54,7 @@ public class TimerService extends Service {
                 }
             }.start();
         } else {
-            stopSelf(); // Stop the service if the intent or its extras are null
+            stopSelf(); // Stop the service
         }
 
         return START_STICKY;
@@ -70,7 +70,7 @@ public class TimerService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (countDownTimer != null) {
-            countDownTimer.cancel(); // Cancel the timer to prevent memory leaks
+            countDownTimer.cancel(); // Cancel the timer
         }
     }
 

@@ -85,7 +85,7 @@ public class MealPlanFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/fetch_meal_plan.php";
 
-        // Pass user_id to the server to fetch the meal plans for the logged-in user
+        // Pass user_id to the server to fetch the meal plans for the logged in user
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -107,6 +107,8 @@ public class MealPlanFragment extends Fragment {
                         handleFetchMealPlansError(error);
                     }
                 }) {
+
+            // Hash map to store the user details
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -119,10 +121,12 @@ public class MealPlanFragment extends Fragment {
         queue.add(stringRequest);
     }
 
+    // assign the data to variables
     private void handleFetchMealPlansResponse(JSONArray response) {
         try {
             if (response.length() > 0) {
                 for (int i = 0; i < response.length(); i++) {
+                    //Extract the data from the JSon object
                     JSONObject mealJson = response.getJSONObject(i);
                     Integer mealPlanID = mealJson.getInt("meal_plan_id");
                     String date = mealJson.getString("date");
@@ -176,6 +180,7 @@ public class MealPlanFragment extends Fragment {
         }
     }
 
+    // NOtify the user there has been an error
     private void handleFetchMealPlansError(VolleyError error) {
         Log.e(TAG, "Volley error: " + error.getMessage(), error);
 
@@ -203,6 +208,7 @@ public class MealPlanFragment extends Fragment {
         }
     }
 
+    // Used to compare the date
     private Date removeTime(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

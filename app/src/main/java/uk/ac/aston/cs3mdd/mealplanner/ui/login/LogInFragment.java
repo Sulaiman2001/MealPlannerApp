@@ -79,9 +79,11 @@ public class LogInFragment extends Fragment {
         final String username = editUsername.getText().toString().trim();
         final String password = editPassword.getText().toString().trim();
 
+        // Sends request to check the log in details
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/login.php";
 
+        // Error - empty fields
         if (username.isEmpty() || password.isEmpty()) {
             emptyInputFieldsMsg.setVisibility(TextView.VISIBLE);
             return;
@@ -107,7 +109,6 @@ public class LogInFragment extends Fragment {
             }
         };
 
-        // Add the request to the RequestQueue
         queue.add(postRequest);
     }
 
@@ -117,10 +118,11 @@ public class LogInFragment extends Fragment {
             String status = jsonResponse.getString("status");
             String message = jsonResponse.getString("message");
 
+            //Check if the log in was successful
             if ("success".equals(status)) {
                 String user_id = jsonResponse.getString("user_id");
 
-                // Save user_id in shared preferences
+                // Save user_id in shared preferences for later use
                 SharedPreferences preferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("user_id", user_id);
@@ -155,6 +157,7 @@ public class LogInFragment extends Fragment {
         Toast.makeText(getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    // store the username and password in a hashmap
     private Map<String, String> createLogInParams() {
         Map<String, String> data = new HashMap<>();
         data.put("username", editUsername.getText().toString());

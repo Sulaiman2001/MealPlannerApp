@@ -39,22 +39,19 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
 
-        // Set cooking time
+        // Populate text views
         holder.cookingTime.setText(formatCookingTime(meal.getCookingTime()));
 
-        // Set title
         holder.title.setText(meal.getTitle());
 
         holder.favouriteCount.setText(String.valueOf(meal.getFavouriteCount()));
 
-        // Check if the meal is vegan and update the visibility of the vegan TextView accordingly
         if (meal.getIsVegan()) {
             holder.vegan.setVisibility(View.VISIBLE);
         } else {
             holder.vegan.setVisibility(View.GONE);
         }
 
-        // Check if the meal is vegetarian and update the visibility of the vegetarian TextView accordingly
         if (meal.getIsVegetarian()) {
             holder.vegetarian.setVisibility(View.VISIBLE);
         } else {
@@ -120,6 +117,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
     }
 
 
+    // data being sent to the meal details fragment
     private void openMealDetailsFragment(Meal meal, View view) {
         Bundle bundle = new Bundle();
         bundle.putInt("mealID", meal.getMealID());
@@ -139,6 +137,7 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.MealViewHold
 
     }
 
+    // display time in hrs and mins
     private String formatCookingTime(int cookingTimeInMinutes) {
         int hours = cookingTimeInMinutes / 60;
         int minutes = cookingTimeInMinutes % 60;

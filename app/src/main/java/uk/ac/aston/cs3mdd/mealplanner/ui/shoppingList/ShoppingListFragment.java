@@ -254,7 +254,7 @@ public class ShoppingListFragment extends Fragment {
         String userID = getUserIDFromSharedPreferences();
         Log.d("AddIngredient", "Ingredient Name: " + ingredientName);
 
-        // Request URL
+        // Request URL to add a custom ingredient
         String url = "http://192.168.1.82/FinalYearApp/Application/MealPlannerApp/MealPlannerDatabase/add_custom_ingredient.php";
 
         // Volley RequestQueue
@@ -266,7 +266,6 @@ public class ShoppingListFragment extends Fragment {
         params.put("ingredient_name", ingredientName);
         params.put("amount", amount);
 
-        // Create a new StringRequest
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -310,7 +309,7 @@ public class ShoppingListFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-
+    //more information dialog
     private void showAddIngredientDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -350,6 +349,7 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
+    // display the correctly checked checkboxes
     private void restoreCheckboxStates() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         int firstPosition = layoutManager.findFirstVisibleItemPosition();
@@ -365,6 +365,7 @@ public class ShoppingListFragment extends Fragment {
         adapter.notifyItemRangeChanged(firstPosition, lastPosition - firstPosition + 1);
     }
 
+    // store the checkboxes that have been checked
     private void saveCheckboxStates() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         for (int i = 0; i < shoppingItemList.size(); i++) {
